@@ -1,0 +1,3702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奶茶日记 - 今天喝什么？</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --pink-100: #FFF5F7;
+      --pink-200: #FFE4E8;
+      --pink-300: #FFB8C6;
+      --pink-400: #FF8FAB;
+      --cream: #FFF8F0;
+      --matcha: #B5D49A;
+      --brown: #8B5A3C;
+      --brown-light: #C4A484;
+      --tea-yellow: #F5E6D3;
+      --shadow: 0 8px 24px rgba(139, 90, 60, 0.12);
+      --shadow-sm: 0 4px 12px rgba(139, 90, 60, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, var(--pink-100) 0%, var(--cream) 50%, var(--tea-yellow) 100%);
+      min-height: 100vh;
+      padding: 16px;
+      padding-bottom: 20px;
+      color: var(--brown);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header-left h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--pink-400);
+      text-shadow: 2px 2px 0 white;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-left .subtitle {
+      font-size: 12px;
+      color: var(--brown-light);
+      margin-top: 2px;
+    }
+
+    /* User Profile Button */
+    .user-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+      border: 3px solid white;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+      position: relative;
+    }
+
+    .user-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Card Group - 并排两个卡片 */
+    .card-group {
+      display: flex;
+      gap: 10px;
+      margin: 12px auto;
+      max-width: 600px;
+      padding: 0 4px;
+    }
+
+    /* Inspiration Card -粉色系 */
+    .inspiration-card {
+      flex: 1;
+      background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .inspiration-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(139, 90, 60, 0.25);
+    }
+
+    .inspiration-card:active {
+      transform: scale(0.96);
+    }
+
+    .inspiration-icon {
+      font-size: 28px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .lowcal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(76, 175, 80, 0.3);
+    }
+
+    .lowcal-card:active {
+      transform: scale(0.96);
+    }
+
+    /* Trending Card */
+    .trending-card {
+      background: linear-gradient(135deg, #FFB8C6, #FF8FAB);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin: 10px auto;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .trending-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(255, 143, 171, 0.3);
+    }
+    .trending-card:active {
+      transform: scale(0.96);
+    }
+    .trending-icon {
+      font-size: 28px;
+    }
+    .trending-text {
+      text-align: center;
+    }
+    .trending-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+    .trending-subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      margin-top: 2px;
+    }
+
+    .badge-item:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 24px rgba(139, 90, 60, 0.2);
+    }
+
+    .badge-item.unlocked {
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 4px 12px rgba(255, 143, 171, 0.3); }
+      50% { box-shadow: 0 4px 20px rgba(255, 143, 171, 0.5); }
+    }
+
+    .toast.show {
+      animation: toastBounce 0.5s ease-out;
+    }
+
+    @keyframes toastBounce {
+      0% { transform: translateX(-50%) translateY(80px); opacity: 0; }
+      60% { transform: translateX(-50%) translateY(-10px); opacity: 1; }
+      80% { transform: translateX(-50%) translateY(5px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    .modal-overlay.active {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-overlay.active .modal {
+      animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.9) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .inspiration-text {
+      text-align: center;
+    }
+
+    .inspiration-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .inspiration-subtitle {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 2px;
+    }
+
+    .inspiration-arrow {
+      display: none;
+    }
+
+    /* Low Cal Card -浅绿色 */
+    .lowcal-card {
+      flex: 1;
+      background: linear-gradient(135deg, #C8E6C9, #81C784);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .lowcal-card:hover {
+      transform: scale(1.02);
+    }
+
+    .lowcal-card:active {
+      transform: scale(0.98);
+    }
+
+    /* Trending Card */
+    .trending-card {
+      background: linear-gradient(135deg, #FFB8C6, #FF8FAB);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin: 10px auto;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .trending-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(255, 143, 171, 0.3);
+    }
+    .trending-card:active {
+      transform: scale(0.96);
+    }
+    .trending-icon {
+      font-size: 28px;
+    }
+    .trending-text {
+      text-align: center;
+    }
+    .trending-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+    .trending-subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      margin-top: 2px;
+    }
+
+    .lowcal-icon {
+      font-size: 28px;
+    }
+
+    .lowcal-text {
+      text-align: center;
+    }
+
+    .lowcal-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .lowcal-subtitle {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 2px;
+    }
+
+    .lowcal-arrow {
+      display: none;
+    }
+
+    .lowcal-view-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lowcal-view-btn:hover {
+      background: rgba(255,255,255,0.5);
+    }
+
+    /* Random Button */
+    .random-btn {
+      padding: 10px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--matcha), #8BC34A);
+      border: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .random-btn:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow);
+    }
+
+    .random-btn .dice {
+      font-size: 18px;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+    }
+
+    .user-btn .level-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      background: var(--brown);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+    }
+
+    /* Stats Panel */
+    .stats-panel {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid var(--pink-200);
+    }
+
+    .stat-card.streak {
+      border-color: var(--matcha);
+      background: linear-gradient(135deg, white, #f0fff0);
+    }
+
+    .stat-icon {
+      font-size: 24px;
+    }
+
+    .stat-info {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brown);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--brown-light);
+      margin-top: 2px;
+    }
+
+    /* Level Card */
+    .level-card {
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      max-width: 600px;
+      margin: 12px auto;
+      border: 2px solid var(--pink-200);
+    }
+
+    .level-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .level-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      border: 3px solid white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .level-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .level-info {
+      flex: 1;
+    }
+
+    .level-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .level-title span:first-child {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--brown);
+    }
+
+    .level-title .role-name {
+      font-size: 12px;
+      color: var(--pink-400);
+      background: var(--pink-100);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .slogan {
+      font-size: 12px;
+      color: var(--brown-light);
+      font-style: italic;
+    }
+
+    .exp-bar-container {
+      background: var(--pink-100);
+      border-radius: 10px;
+      height: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .exp-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink-300), var(--pink-400));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .exp-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    /* Badges Section */
+    .badges-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--pink-100);
+    }
+
+    .badge-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge-group .badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--pink-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .badge-group .badge.unlocked {
+      background: linear-gradient(135deg, var(--matcha), #8BC34A);
+      border-color: white;
+      animation: badgePop 0.5s ease;
+      box-shadow: 0 0 12px rgba(181, 212, 154, 0.5);
+    }
+
+    .badge-group .badge.locked {
+      filter: grayscale(1);
+      opacity: 0.3;
+    }
+
+    .badge-group .badge-label {
+      font-size: 10px;
+      color: var(--brown-light);
+    }
+
+    .badge-help {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 2px solid var(--pink-200);
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+
+    .badge-help:hover {
+      background: var(--pink-100);
+      transform: scale(1.1);
+    }
+
+    @keyframes badgePop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* Month Navigation */
+    .month-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 16px 0;
+    }
+
+    .month-nav button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--brown);
+      transition: all 0.2s;
+    }
+
+    .month-nav button:hover {
+      background: var(--pink-200);
+      transform: scale(1.1);
+    }
+
+    .month-nav h2 {
+      font-size: 18px;
+      font-weight: 700;
+      min-width: 140px;
+      text-align: center;
+      color: var(--brown);
+    }
+
+    /* Calendar */
+    .calendar {
+      background: white;
+      border-radius: 24px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--brown-light);
+      padding: 6px 0;
+    }
+
+    .weekday.saturday { color: var(--pink-400); }
+    .weekday.sunday { color: var(--pink-400); }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      background: var(--cream);
+      min-height: 50px;
+      padding: 2px;
+    }
+
+    .day-cell:hover:not(.empty) {
+      background: var(--pink-200);
+      transform: scale(1.05);
+    }
+
+    .day-cell.empty {
+      background: transparent;
+      cursor: default;
+    }
+
+    .day-cell.today {
+      background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+      box-shadow: inset 0 0 0 2px white, var(--shadow-sm);
+    }
+
+    .day-cell.has-record {
+      background: linear-gradient(135deg, var(--tea-yellow), white);
+    }
+
+    .day-cell.weekend:not(.today) {
+      border: 2px solid var(--pink-200);
+    }
+
+    .day-number {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .day-cell.today .day-number {
+      color: var(--pink-400);
+    }
+
+    .day-drinks {
+      display: flex;
+      gap: 2px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .drink-dot {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .drink-dot img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(139, 90, 60, 0.3);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      padding: 16px;
+      pointer-events: none;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 0;
+      padding: 20px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: var(--shadow);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal h3 {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: var(--brown);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brown-light);
+      margin-bottom: 6px;
+    }
+
+    .form-group input[type="text"],
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid var(--pink-200);
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--cream);
+      color: var(--brown);
+      transition: border-color 0.2s;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--pink-400);
+    }
+
+    /* Drink Type Select */
+    .drink-type-select {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .drink-type-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid var(--pink-200);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .drink-type-btn.selected {
+      border-color: var(--pink-400);
+      background: var(--pink-100);
+    }
+
+    .drink-type-btn .emoji {
+      font-size: 22px;
+    }
+
+    .drink-type-btn .name {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Sweetness */
+    .sweetness-select {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sweetness-btn {
+      padding: 6px 10px;
+      border-radius: 16px;
+      border: 2px solid var(--pink-200);
+      background: white;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .sweetness-btn.selected {
+      border-color: var(--pink-400);
+      background: var(--pink-100);
+    }
+
+    /* Mood */
+    .mood-select {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .mood-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--pink-200);
+      background: white;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mood-btn.selected {
+      border-color: var(--pink-400);
+      background: var(--pink-100);
+      transform: scale(1.1);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-cancel {
+      background: var(--pink-200);
+      color: var(--brown);
+    }
+
+    .btn-confirm {
+      background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+      color: white;
+    }
+
+    .btn-confirm:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* User Modal */
+    .user-modal .profile-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .user-modal .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 8px;
+      border: 3px solid white;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .user-modal .profile-avatar:hover {
+      transform: scale(1.05);
+    }
+
+    .user-modal .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-modal .profile-avatar .camera-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--brown);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border: 2px solid white;
+    }
+
+    .user-modal .profile-level {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--pink-400);
+    }
+
+    /* Role Grid */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .role-item {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      background: var(--cream);
+      border: 2px solid var(--pink-200);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .role-item.locked {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .role-item.locked::after {
+      content: '🔒';
+      position: absolute;
+      font-size: 16px;
+    }
+
+    .role-item.selected {
+      border-color: var(--pink-400);
+      background: var(--pink-100);
+    }
+
+    .role-item .role-emoji {
+      font-size: 28px;
+    }
+
+    .role-item .role-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--brown);
+    }
+
+    .role-item .role-req {
+      font-size: 9px;
+      color: var(--brown-light);
+    }
+
+    /* Records Section */
+    .records-section {
+      max-width: 600px;
+      margin: 16px auto 0;
+    }
+
+    .records-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brown-light);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .record-item {
+      background: white;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 6px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .record-item .drink-icon {
+      font-size: 28px;
+    }
+
+    .record-item .record-info {
+      flex: 1;
+    }
+
+    .record-item .drink-name {
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .record-item .drink-detail {
+      font-size: 11px;
+      color: var(--brown-light);
+      margin-top: 2px;
+    }
+
+    .record-item .mood {
+      font-size: 18px;
+    }
+
+    .record-item .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      opacity: 0.3;
+      transition: opacity 0.2s;
+    }
+
+    .record-item .delete-btn:hover {
+      opacity: 1;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--brown-light);
+    }
+
+    .empty-state .bubble-tea-icon {
+      font-size: 48px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .empty-state p {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    /* Slot Machine */
+    .slot-machine {
+      margin: 16px 0;
+    }
+
+    .slot-window {
+      background: linear-gradient(135deg, var(--pink-100), var(--cream));
+      border-radius: 20px;
+      padding: 20px;
+      overflow: hidden;
+      border: 3px solid var(--pink-300);
+      box-shadow: inset 0 4px 12px rgba(139, 90, 60, 0.1);
+      height: 260px;
+      position: relative;
+    }
+
+    /*渐变遮罩上下边缘 */
+    .slot-window::before,
+    .slot-window::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 40px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .slot-window::before {
+      top: 0;
+      background: linear-gradient(to bottom, var(--pink-100), transparent);
+    }
+
+    .slot-window::after {
+      bottom: 0;
+      background: linear-gradient(to top, var(--cream), transparent);
+    }
+
+    .slot-reel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.1s linear;
+    }
+
+    .slot-reel.spinning {
+      transition: none;
+    }
+
+    .slot-reel.settling {
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .slot-item {
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-height: 70px;
+      justify-content: center;
+    }
+
+    .slot-item .slot-emoji {
+      font-size: 40px;
+      line-height: 1;
+    }
+
+    .slot-item .slot-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brown);
+      white-space: nowrap;
+    }
+
+    .slot-item.blur {
+      opacity: 0.3;
+      filter: blur(2px);
+    }
+
+    /* Export Floating Button */
+    .export-float-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--matcha), #8BC34A);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      z-index: 999;
+      border: none;
+    }
+
+    .export-float-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(139, 90, 60, 0.2);
+    }
+
+    /* Export Options */
+    .export-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--cream);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid var(--pink-200);
+    }
+
+    .export-option:hover {
+      background: var(--pink-100);
+      border-color: var(--pink-400);
+      transform: scale(1.02);
+    }
+
+    .export-option:active {
+      transform: scale(0.98);
+    }
+
+    .export-icon {
+      font-size: 28px;
+    }
+
+    .export-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--brown);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      z-index: 1002;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, var(--matcha), #8BC34A);
+    }
+
+    .toast.levelup {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      font-size: 16px;
+    }
+
+    /* Stars animation for level up */
+    .stars {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      z-index: 1002;
+      pointer-events: none;
+      animation: starBurst 1s ease-out forwards;
+    }
+
+    @keyframes starBurst {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+    }
+
+    /* Photo Upload Input (hidden) */
+    .photo-upload-input {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+        padding-bottom: 80px;
+      }
+
+      .header-left h1 {
+        font-size: 20px;
+      }
+
+      .stat-card {
+        padding: 10px 12px;
+      }
+
+      .stat-number {
+        font-size: 18px;
+      }
+
+      .day-cell {
+        min-height: 44px;
+        border-radius: 10px;
+      }
+
+      .day-number {
+        font-size: 12px;
+      }
+
+      .modal {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <h1>🧋 奶茶日记</h1>
+      <p class="subtitle">今天喝点什么呀？</p>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <button class="user-btn" id="userBtn" onclick="openUserModal()">
+        <span id="userAvatar">🧋</span>
+        <span class="level-badge" id="userLevelBadge">1</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 分享中心按钮 -->
+  <div class="export-float-btn" onclick="openShareModal()">
+    📤 分享
+  </div>
+
+  <!-- 个人主页 -->
+  <div class="level-card" id="levelCard">
+    <div class="level-header">
+      <div class="level-avatar" id="levelAvatar">
+        <span>🧋</span>
+      </div>
+      <div class="level-info">
+        <div class="level-title">
+          <span id="levelText">Lv.1</span>
+          <span class="role-name" id="roleName">奶茶学徒</span>
+        </div>
+        <div class="slogan" id="sloganText">快乐没电？奶茶来续电！</div>
+      </div>
+    </div>
+    <div class="exp-bar-container">
+      <div class="exp-bar" id="expBar" style="width: 0%"></div>
+      <div class="exp-text" id="expText">0 / 100 EXP</div>
+    </div>
+    <div class="badges-row">
+      <div class="badge-group">
+        <div class="badge locked" id="badge3" title="连续3天">🌱</div>
+        <div class="badge-label">浅尝一下</div>
+      </div>
+      <div class="badge-group">
+        <div class="badge locked" id="badge7" title="连续7天">🔥</div>
+        <div class="badge-label">燃烧中</div>
+      </div>
+      <div class="badge-group">
+        <div class="badge locked" id="badge30" title="连续30天">⭐</div>
+        <div class="badge-label">奶茶大师</div>
+      </div>
+      <div class="badge-help" onclick="openBadgeModal()">🏅</div>
+      <div class="badge-help" onclick="openRulesModal()">❓</div>
+    </div>
+  </div>
+
+  <!-- 随机卡片组 -->
+  <div class="card-group">
+    <div class="inspiration-card" onclick="openRandomModal()">
+      <div class="inspiration-icon">🎲</div>
+      <div class="inspiration-text">
+        <div class="inspiration-title">不知道喝什么？</div>
+        <div class="inspiration-subtitle">随机抽！看看能不能给你灵感~</div>
+      </div>
+    </div>
+    <div class="lowcal-card" onclick="openLowCalModal()">
+      <div class="lowcal-icon">🧊</div>
+      <div class="lowcal-text">
+        <div class="lowcal-title">减肥人士进！</div>
+        <div class="lowcal-subtitle">来抽一杯低卡饮品~</div>
+      </div>
+      <div class="lowcal-view-btn" onclick="event.stopPropagation(); openLowcalLibraryModal()">📋</div>
+    </div>
+  </div>
+  <div class="trending-card" onclick="openTrendingModal()" style="background: linear-gradient(135deg, #90CAF9, #64B5F6);">
+    <div class="trending-icon" style="font-size: 18px; color: white;">🔥 热门趋势</div>
+    <div class="trending-text" style="flex: 1; text-align: right;">
+      <div class="trending-title"></div>
+      <div class="trending-subtitle" id="trendingTop3" style="color: white;">加载中...</div>
+    </div>
+  </div>
+
+  <div class="stats-panel">
+    <div class="stat-card">
+      <span class="stat-icon">🧋</span>
+      <div class="stat-info">
+        <div class="stat-number" id="monthTea">0</div>
+        <div class="stat-label">本月奶茶</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-icon">☕</span>
+      <div class="stat-info">
+        <div class="stat-number" id="monthCoffee">0</div>
+        <div class="stat-label">本月咖啡</div>
+      </div>
+    </div>
+    <div class="stat-card streak">
+      <span class="stat-icon">🔥</span>
+      <div class="stat-info">
+        <div class="stat-number" id="streak">0</div>
+        <div class="stat-label">连续打卡</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="month-nav">
+    <button onclick="changeMonth(-1)">◀</button>
+    <h2 id="currentMonth"></h2>
+    <button onclick="changeMonth(1)">▶</button>
+  </nav>
+
+  <main class="calendar">
+    <div class="weekdays">
+      <div class="weekday sunday">日</div>
+      <div class="weekday">一</div>
+      <div class="weekday">二</div>
+      <div class="weekday">三</div>
+      <div class="weekday">四</div>
+      <div class="weekday">五</div>
+      <div class="weekday saturday">六</div>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </main>
+
+  <section class="records-section" id="recordsSection">
+    <h3 class="records-title">📝 今日记录</h3>
+    <div id="todayRecords"></div>
+  </section>
+
+  <!-- Add Record Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h3 id="modalTitle">🧋 添加记录</h3>
+
+      <div class="form-group">
+        <label>饮品类型</label>
+        <div class="drink-type-select">
+          <button class="drink-type-btn selected" data-type="milkTea" onclick="selectDrinkType('milkTea')">
+            <span class="emoji">🧋</span>
+            <span class="name">奶茶</span>
+          </button>
+          <button class="drink-type-btn" data-type="coffee" onclick="selectDrinkType('coffee')">
+            <span class="emoji">☕</span>
+            <span class="name">咖啡</span>
+          </button>
+          <button class="drink-type-btn" data-type="fruitTea" onclick="selectDrinkType('fruitTea')">
+            <span class="emoji">🥤</span>
+            <span class="name">果茶</span>
+          </button>
+         <button class="drink-type-btn" data-type="matcha" onclick="selectDrinkType('matcha')">
+            <span class="emoji">🫖</span>
+            <span class="name">抹茶</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="drinkName">饮品名称</label>
+        <input type="text" id="drinkName" placeholder="如：珍珠奶茶、生椰拿铁...">
+      </div>
+
+      <div class="form-group" id="sweetnessGroup">
+        <label>甜度</label>
+        <div class="sweetness-select">
+          <button class="sweetness-btn" data-sweetness="全糖" onclick="selectSweetness(this)">全糖</button>
+          <button class="sweetness-btn" data-sweetness="七分糖" onclick="selectSweetness(this)">七分糖</button>
+          <button class="sweetness-btn selected" data-sweetness="五分糖" onclick="selectSweetness(this)">五分糖</button>
+          <button class="sweetness-btn" data-sweetness="三分糖" onclick="selectSweetness(this)">三分糖</button>
+          <button class="sweetness-btn" data-sweetness="无糖" onclick="selectSweetness(this)">无糖</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>心情</label>
+        <div class="mood-select">
+          <button class="mood-btn" data-mood="😊" onclick="selectMood(this)">😊</button>
+          <button class="mood-btn" data-mood="😋" onclick="selectMood(this)">😋</button>
+          <button class="mood-btn" data-mood="🥰" onclick="selectMood(this)">🥰</button>
+          <button class="mood-btn" data-mood="😴" onclick="selectMood(this)">😴</button>
+          <button class="mood-btn" data-mood="🤩" onclick="selectMood(this)">🤩</button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+        <button class="btn btn-confirm" onclick="saveRecord()">保存✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal user-modal">
+      <h3>👤 编辑个人信息</h3>
+
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatarBtn" onclick="triggerPhotoUpload()">
+          <span id="profileAvatarEmoji">🧋</span>
+          <img id="profileAvatarImg" src="" style="display: none;">
+          <span class="camera-icon">📷</span>
+        </div>
+        <div class="profile-level" id="profileLevelText">Lv.1 奶茶学徒</div>
+        <input type="file" class="photo-upload-input" id="photoUpload" accept="image/*" onchange="handlePhotoUpload(event)">
+      </div>
+
+      <div class="form-group">
+        <label for="nickname">昵称</label>
+        <input type="text" id="nickname" placeholder="给自己起个名字吧～">
+      </div>
+
+      <div class="form-group">
+        <label for="sloganInput">Slogan</label>
+        <input type="text" id="sloganInput" placeholder="一句话介绍自己">
+      </div>
+
+      <div class="form-group">
+        <label>选择角色</label>
+        <div class="role-grid" id="roleGrid"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-cancel" onclick="closeUserModal()">取消</button>
+        <button class="btn btn-confirm" onclick="saveUserProfile()">保存✨</button>
+      </div>
+       </div>
+  </div>
+
+  <!-- Random Selector Modal -->
+  <div class="modal-overlay" id="randomModal">
+    <div class="modal" style="text-align: center;">
+      <div style="position: relative;">
+        <button onclick="closeRandomModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>🎲 随机抽取灵感</h3>
+
+      <!--滚动展示区 -->
+      <div class="slot-machine" id="slotMachine">
+        <div class="slot-window">
+          <div class="slot-reel" id="slotReel">
+            <div class="slot-item">
+              <div class="slot-emoji">🧋</div>
+              <div class="slot-name">珍珠奶茶</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 结果显示 -->
+      <div id="randomResult" style="margin: 16px 0; display: none;">
+        <div style="font-size: 56px; margin-bottom: 8px;" id="randomEmoji">🧋</div>
+        <div style="font-size: 18px; font-weight: 700; color: var(--brown);" id="randomDrinkName">珍珠奶茶</div>
+        <div style="font-size: 12px; color: var(--brown-light); margin-top: 4px;" id="randomSweetness">五分糖</div>
+        <div style="font-size: 11px; color: #4CAF50; margin-top: 2px;" id="randomKcal"></div>
+      </div>
+
+      <!-- 抽取按钮 -->
+      <button class="btn btn-confirm" id="spinBtn" onclick="spinSlot()" style="font-size: 16px; padding: 14px 32px;">
+        🎲 开始抽取
+      </button>
+
+      <!-- 结果按钮 -->
+      <div id="resultActions" style="display: none; gap: 10px; margin-top: 12px;">
+        <button class="btn btn-cancel" onclick="resetSlot()">🔄 再抽一次</button>
+        <button class="btn btn-confirm" onclick="acceptRandom()">✅ 就喝这个！</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rules Modal -->
+  <div class="modal-overlay" id="rulesModal">
+    <div class="modal" style="text-align: left;">
+      <div style="position: relative;">
+        <button onclick="closeRulesModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>📖 规则说明</h3>
+      <div style="margin: 12px 0; font-size: 13px; line-height: 1.8;">
+        <div style="font-weight: 700; color: var(--brown); margin-bottom: 8px;">🌱 连续打卡徽章</div>
+        <div style="margin-bottom: 12px; color: var(--brown-light);">
+          <div>• 🌱 浅尝一下：连续记录<b>3天</b></div>
+          <div>• 🔥 燃烧中：连续记录 <b>7天</b></div>
+          <div>• ⭐ 奶茶大师：连续记录 <b>30天</b></div>
+        </div>
+        <div style="font-weight: 700; color: var(--brown); margin-bottom: 8px;">⬆️ 升级规则</div>
+        <div style="margin-bottom: 12px; color: var(--brown-light);">
+          <div>• 每记录1杯饮品获得 <b>+10 EXP</b></div>
+          <div>•升级所需经验 =等级 × 100</div>
+          <div>• Lv.1→2 需要 100 EXP（10杯）</div>
+          <div>• Lv.2→3 需要 200 EXP（20杯）</div>
+          <div>• 以此类推...</div>
+        </div>
+        <div style="font-weight: 700; color: var(--brown); margin-bottom: 8px;">👑 角色解锁</div>
+        <div style="color: var(--brown-light);">
+          <div>•咖啡新手：默认解锁</div>
+          <div>•🫖 抹茶师：累计30杯</div>
+          <div>• 👑 奶茶贵族：累计100杯</div>
+          <div>• 🌟 传奇奶茶师：累计365杯</div>
+        </div>
+      </div>
+      <button class="btn btn-confirm" onclick="closeRulesModal()" style="width: 100%;">明白了！</button>
+    </div>
+  </div>
+
+  <!-- Badge Modal -->
+  <div class="modal-overlay" id="badgeModal">
+    <div class="modal" style="text-align: left; max-width: 400px; max-height: 85vh; overflow-y: auto;">
+      <h3>🏅 我的成就</h3>
+      <div id="badgeProgress" style="font-size: 12px; color: #888; margin-bottom: 12px;"></div>
+      <div id="badgeGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"></div>
+      <button class="btn btn-confirm" onclick="closeBadgeModal()" style="width: 100%; margin-top: 16px;">关闭</button>
+    </div>
+  </div>
+
+  <!-- Badge Unlock Animation Modal -->
+  <div class="modal-overlay" id="badgeUnlockModal">
+    <div class="modal" style="text-align: center; background: linear-gradient(135deg, #FFF5F7, #FFF8F0);">
+      <div class="badge-unlock-icon" id="badgeUnlockIcon" style="font-size: 80px; margin: 30px 0 20px; animation: badgeUnlock 0.6s ease;">🏅</div>
+      <div id="badgeUnlockName" style="font-size: 18px; font-weight: 800; color: #8B5A3C;">初次尝试</div>
+      <div id="badgeUnlockDesc" style="font-size: 13px; color: #C4A484; margin-top: 8px;">开启奶茶之旅</div>
+      <div style="margin-top: 20px;">
+        <button class="btn btn-confirm" onclick="closeBadgeUnlockModal()" style="width: 100%;">太棒了！</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes badgeUnlock {
+      0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+      50% { transform: scale(1.3) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    .badge-item {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      gap: 4px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .badge-item.unlocked {
+      background: linear-gradient(135deg, #FFE4E8, #FFB8C6);
+      border: 2px solid #FF8FAB;
+    }
+    .badge-item.locked {
+      background: #f5f5f5;
+      border: 2px solid #e0e0e0;
+      opacity: 0.6;
+    }
+    .badge-item:hover {
+      transform: scale(1.05);
+    }
+    .badge-item .badge-icon {
+      font-size: 28px;
+    }
+    .badge-item .badge-name {
+      font-size: 9px;
+      color: #8B5A3C;
+      text-align: center;
+    }
+  </style>
+
+  <!-- LowCal Library Modal -->
+  <div class="modal-overlay" id="lowcalModal">
+    <div class="modal" style="text-align: left; max-width: 400px; max-height: 85vh; overflow-y: auto;">
+      <div style="position: relative;">
+        <button onclick="closeLowcalModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>🥗 低卡饮品库</h3>
+      <div id="lowcalLibraryContent" style="margin: 12px 0; font-size: 12px;"></div>
+      <button class="btn btn-confirm" onclick="closeLowcalModal()" style="width: 100%;">关闭</button>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal" style="text-align: center;">
+      <div style="position: relative;">
+        <button onclick="closeExportModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>📤 导出记录图片</h3>
+      <div style="margin: 16px 0;">
+        <div class="export-option" onclick="exportTodayImage()">
+          <span class="export-icon">📅</span>
+          <span class="export-text">今日记录</span>
+        </div>
+        <div class="export-option" onclick="exportWeekImage()">
+          <span class="export-icon">📆</span>
+          <span class="export-text">本周记录</span>
+        </div>
+        <div class="export-option" onclick="exportMonthImage()">
+          <span class="export-icon">🗓️</span>
+          <span class="export-text">本月记录</span>
+        </div>
+      </div>
+      <button class="btn btn-cancel" onclick="closeExportModal()" style="width: 100%;">关闭</button>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="modal" style="text-align: center;">
+      <div style="position: relative;">
+        <button onclick="closeShareModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>🎆 分享中心</h3>
+      <div style="margin: 16px 0;">
+        <div class="export-option" onclick="generateYearReport()">
+          <span class="export-icon">🎆</span>
+          <span class="export-text">年度报告</span>
+        </div>
+        <div class="export-option" onclick="generateMonthReport()">
+          <span class="export-icon">📊</span>
+          <span class="export-text">本月报告</span>
+        </div>
+        <div class="export-option" onclick="generateCheckinWatermark()">
+          <span class="export-icon">📸</span>
+          <span class="export-text">打卡水印</span>
+        </div>
+      </div>
+      <button class="btn btn-cancel" onclick="closeShareModal()" style="width: 100%;">关闭</button>
+    </div>
+  </div>
+
+  <!-- Trending Modal -->
+  <div class="modal-overlay" id="trendingModal">
+    <div class="modal" style="text-align: left; max-width: 400px; max-height: 85vh; overflow-y: auto;">
+      <div style="position: relative;">
+        <button onclick="closeTrendingModal()" style="position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--pink-200); color: var(--brown); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <h3>🔥 热门趋势</h3>
+      <div id="trendingContent" style="margin: 12px 0; font-size: 13px;"></div>
+      <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+        <div style="font-size: 12px; color: #888;">添加新品/避雷</div>
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <input type="text" id="trendingNameInput" placeholder="饮品名称" style="flex: 1; padding: 8px 12px; border: 2px solid #FFE4E8; border-radius: 10px; font-size: 12px;">
+          <select id="trendingTypeSelect" style="padding: 8px; border-radius: 10px; border: 2px solid #FFE4E8; background: white; font-size: 12px;">
+            <option value="new">🆕 新品</option>
+            <option value="avoid">💣 避雷</option>
+          </select>
+          <button onclick="addTrendingItem()" style="padding: 8px 16px; background: #FF8FAB; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 600;">添加</button>
+        </div>
+      </div>
+      <button class="btn btn-cancel" onclick="closeTrendingModal()" style="width: 100%; margin-top: 12px;">关闭</button>
+    </div>
+  </div>
+
+  <!-- Export Preview (hidden, for rendering) -->
+  <div id="exportPreview" style="position: fixed; left: -9999px; top: 0; width: 600px; background: white; padding: 20px; font-family: 'Nunito', sans-serif;">
+    <div id="exportContent"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============ Data ============
+    const STORAGE_KEY = 'bubbleTeaRecords';
+    const USER_KEY = 'bubbleTeaUser';
+    const PHOTOS_KEY = 'bubbleTeaPhotos';
+    const BADGES_KEY = 'bubbleTeaBadges';
+
+    // 成就徽章定义
+    const BADGES = {
+      firstCup: { id: 'firstCup', name: '初次尝试', icon: '🏅', desc: '记录第一杯奶茶', condition: (stats) => stats.total >= 1 },
+      streak3: { id: 'streak3', name: '浅尝一下', icon: '🌱', desc: '连续3天打卡', condition: (stats) => stats.streak >= 3 },
+      streak7: { id: 'streak7', name: '燃烧中', icon: '🔥', desc: '连续7天打卡', condition: (stats) => stats.streak >= 7 },
+      streak30: { id: 'streak30', name: '奶茶大师', icon: '⭐', desc: '连续30天打卡', condition: (stats) => stats.streak >= 30 },
+      coffeeBeginner: { id: 'coffeeBeginner', name: '咖啡入门', icon: '☕', desc: '记录第一杯咖啡', condition: (stats) => stats.coffee >= 1 },
+      pureTea: { id: 'pureTea', name: '纯茶主义者', icon: '🍵', desc: '连续5杯无糖', condition: (stats) => stats.noSugarStreak >= 5 },
+      hundredCups: { id: 'hundredCups', name: '奶茶大户', icon: '👑', desc: '累计100杯', condition: (stats) => stats.total >= 100 },
+      saver: { id: 'saver', name: '省钱达人', icon: '💰', desc: '本月消费低于¥200', condition: (stats) => stats.monthCost < 200 && stats.monthCost > 0 },
+      explorer: { id: 'explorer', name: '品牌探险家', icon: '🌍', desc: '尝试5个不同品牌', condition: (stats) => stats.brands >= 5 },
+      nightOwl: { id: 'nightOwl', name: '夜猫子', icon: '🌙', desc: '晚上10点后记录', condition: (stats) => stats.hasNightRecord },
+      birthday: { id: 'birthday', name: '生日特饮', icon: '🎂', desc: '生日当天记录', condition: (stats) => stats.isBirthday },
+    };
+
+    let records = [];
+    let userProfile = null;
+    let customPhotos = [];
+    let badgeData = { badges: {}, unlockedAt: {} };
+    let currentDate = new Date();
+    let selectedDate = null;
+    let currentForm = {
+      type: 'milkTea',
+      sweetness: '五分糖',
+      mood: '😊'
+    };
+
+    // Role definitions
+    const ROLES = {
+      milkTeaApprentice: { id: 'milkTeaApprentice', name: '奶茶学徒', emoji: '🧋', minCups: 0 },
+      coffeeNewbie: { id: 'coffeeNewbie', name: '咖啡新手', emoji: '☕', minCups: 0 },
+      fruitTeaMaster: { id: 'fruitTeaMaster', name: '果茶达人', emoji: '🥤', minCups: 0 },
+      matchaMaster: { id: 'matchaMaster', name: '抹茶师', emoji: '🫖', minCups: 30 },
+      milkTeaNoble: { id: 'milkTeaNoble', name: '奶茶贵族', emoji: '👑', minCups: 100 },
+      legend: { id: 'legend', name: '传奇奶茶师', emoji: '🌟', minCups: 365 }
+    };
+
+    const drinkEmojis = {
+      milkTea: '🧋',
+      coffee: '☕',
+      fruitTea: '🥤',
+      matcha: '🫖'
+    };
+
+    const drinkNames = {
+      milkTea: '奶茶',
+      coffee: '咖啡',
+      fruitTea: '果茶',
+      matcha: '抹茶'
+    };
+
+    // ============ Initialize ============
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      initUserProfile();
+      renderCalendar();
+      renderTodayRecords();
+      updateStats();
+      updateLevelCard();
+      updateTrendingTop3();
+    });
+
+    function loadData() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) records = JSON.parse(stored);
+
+      const userStored = localStorage.getItem(USER_KEY);
+      if (userStored) userProfile = JSON.parse(userStored);
+
+      const photosStored = localStorage.getItem(PHOTOS_KEY);
+      if (photosStored) customPhotos = JSON.parse(photosStored);
+
+      const badgeStored = localStorage.getItem(BADGES_KEY);
+      if (badgeStored) badgeData = JSON.parse(badgeStored);
+      else {
+        badgeData = { badges: {}, unlockedAt: {} };
+        Object.keys(BADGES).forEach(k => {
+          badgeData.badges[k] = false;
+          badgeData.unlockedAt[k] = null;
+        });
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      localStorage.setItem(USER_KEY, JSON.stringify(userProfile));
+      localStorage.setItem(PHOTOS_KEY, JSON.stringify(customPhotos));
+      localStorage.setItem(BADGES_KEY, JSON.stringify(badgeData));
+    }
+
+    // ============ Badge Functions ============
+    function calculateBadgeStats() {
+      const stats = {
+        total: 0,
+        streak: 0,
+        coffee: 0,
+        noSugarStreak: 0,
+        brands: new Set(),
+        monthCost: 0,
+        hasNightRecord: false,
+        isBirthday: false,
+      };
+
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      const birthdayStr = userProfile && userProfile.birthday ? userProfile.birthday : null;
+      stats.isBirthday = birthdayStr && todayStr.includes(birthdayStr);
+
+      records.forEach(r => {
+        r.drinks.forEach(d => {
+          stats.total++;
+          if (d.type === 'coffee') stats.coffee++;
+          if (d.sweetness === '无糖') stats.noSugarStreak++;
+          else stats.noSugarStreak = 0;
+        });
+      });
+
+      // Calculate streak
+      stats.streak = calculateStreak();
+
+      // Count brands
+      const brandKeywords = ['喜茶', '茉莉奶白', '瑞幸', '库迪', '星巴克', '一点点', '蜜雪冰城', '霸王茶姬', '茶百道', '古茗', '奈雪'];
+      records.forEach(r => {
+        r.drinks.forEach(d => {
+          brandKeywords.forEach(b => {
+            if (d.name.includes(b)) stats.brands.add(b);
+          });
+        });
+      });
+      stats.brands = stats.brands.size;
+
+      // Check night record
+      records.forEach(r => {
+        if (r.date === todayStr) {
+          r.drinks.forEach(d => {
+            if (d.time) {
+              const hour = parseInt(d.time.split(':')[0]);
+              if (hour >= 22 || hour < 5) stats.hasNightRecord = true;
+            }
+          });
+        }
+      });
+
+      return stats;
+    }
+
+    function checkBadges() {
+      const stats = calculateBadgeStats();
+      const newlyUnlocked = [];
+
+      Object.keys(BADGES).forEach(key => {
+        if (!badgeData.badges[key] && BADGES[key].condition(stats)) {
+          badgeData.badges[key] = true;
+          badgeData.unlockedAt[key] = new Date().toISOString();
+          newlyUnlocked.push(BADGES[key]);
+        }
+      });
+
+      if (newlyUnlocked.length > 0) {
+        saveData();
+        showBadgeUnlock(newlyUnlocked[0]);
+      }
+    }
+
+    function openBadgeModal() {
+      const unlocked = Object.values(badgeData.badges).filter(v => v).length;
+      const total = Object.keys(BADGES).length;
+      document.getElementById('badgeProgress').textContent = `已解锁 ${unlocked}/${total}`;
+
+      let html = '';
+      Object.keys(BADGES).forEach(key => {
+        const badge = BADGES[key];
+        const isUnlocked = badgeData.badges[key];
+        html += `<div class="badge-item ${isUnlocked ? 'unlocked' : 'locked'}" title="${badge.name}: ${badge.desc}">
+          <span class="badge-icon">${isUnlocked ? badge.icon : '🔒'}</span>
+          <span class="badge-name">${badge.name}</span>
+        </div>`;
+      });
+      document.getElementById('badgeGrid').innerHTML = html;
+      document.getElementById('badgeModal').classList.add('active');
+    }
+
+    function closeBadgeModal() {
+      document.getElementById('badgeModal').classList.remove('active');
+    }
+
+    function showBadgeUnlock(badge) {
+      document.getElementById('badgeUnlockIcon').textContent = badge.icon;
+      document.getElementById('badgeUnlockIcon').style.animation = 'none';
+      setTimeout(() => {
+        document.getElementById('badgeUnlockIcon').style.animation = 'badgeUnlock 0.6s ease';
+      }, 10);
+      document.getElementById('badgeUnlockName').textContent = badge.name;
+      document.getElementById('badgeUnlockDesc').textContent = badge.desc;
+      document.getElementById('badgeUnlockModal').classList.add('active');
+    }
+
+    function closeBadgeUnlockModal() {
+      document.getElementById('badgeUnlockModal').classList.remove('active');
+    }
+
+    function initUserProfile() {
+      if (!userProfile) {
+        userProfile = {
+          nickname: '奶茶控',
+          slogan: '快乐没电？奶茶来续电！',
+          role: 'milkTeaApprentice',
+          exp: 0,
+          level: 1,
+          customAvatar: null
+        };
+        saveData();
+      }
+    }
+
+    // ============ Level & EXP ============
+    function calculateLevel(exp) {
+      let level = 1;
+      let totalRequired = 0;
+      while (true) {
+        totalRequired += level * 100;
+        if (exp< totalRequired) break;
+        level++;
+        if (level >= 99) break;
+      }
+      return level;
+    }
+
+    function getExpForLevel(level) {
+      let total = 0;
+      for (let i = 1; i < level; i++) total += i * 100;
+      return total;
+    }
+
+    function getExpForNextLevel(level) {
+      let total = 0;
+      for (let i = 1; i <= level; i++) total += i * 100;
+      return total;
+    }
+
+    function getCurrentLevelExp(exp, level) {
+      return exp - getExpForLevel(level);
+    }
+
+    function getRequiredExpForLevel(level) {
+      return level * 100;
+    }
+
+    function addExp(amount) {
+      const oldLevel = userProfile.level;
+      userProfile.exp += amount;
+      userProfile.level = calculateLevel(userProfile.exp);
+
+      if (userProfile.level > oldLevel) {
+        showLevelUpAnimation(userProfile.level);
+      }
+
+      updateUnlockedRoles();
+      saveData();
+      updateLevelCard();
+    }
+
+    function getTotalCups() {
+      let total = 0;
+      records.forEach(r => total += r.drinks.length);
+      return total;
+    }
+
+    function updateUnlockedRoles() {
+      const totalCups = getTotalCups();
+      const unlocked = [];
+
+      for (const key in ROLES) {
+        if (ROLES[key].minCups <= totalCups) {
+          unlocked.push(key);
+        }
+      }
+
+      if (!unlocked.includes(userProfile.role)) {
+        userProfile.role = unlocked[0] || 'milkTeaApprentice';
+      }
+    }
+
+    // ============ UI Updates ============
+    function updateLevelCard() {
+      const { level, exp, role, nickname, slogan, customAvatar } = userProfile;
+      const currentExp = getCurrentLevelExp(exp, level);
+      const requiredExp = getRequiredExpForLevel(level);
+      const percentage = Math.min((currentExp / requiredExp) * 100, 100);
+
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      // Header
+      document.getElementById('levelText').textContent = `Lv.${level}`;
+      document.getElementById('roleName').textContent = roleData.name;
+      document.getElementById('sloganText').textContent = slogan || '快乐没电？奶茶来续电！';
+
+      // Avatar
+      const avatarEl = document.getElementById('levelAvatar');
+      if (customAvatar) {
+        avatarEl.innerHTML = `<img src="${customAvatar}" alt="avatar">`;
+      } else {
+        avatarEl.innerHTML = `<span>${roleData.emoji}</span>`;
+      }
+
+      // EXP bar
+      document.getElementById('expBar').style.width = `${percentage}%`;
+      document.getElementById('expText').textContent = `${currentExp} / ${requiredExp} EXP`;
+
+      // User button
+      const userAvatarEl = document.getElementById('userAvatar');
+      if (customAvatar) {
+        userAvatarEl.innerHTML = `<img src="${customAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        userAvatarEl.textContent = roleData.emoji;
+      }
+      document.getElementById('userLevelBadge').textContent = level;
+
+      // Badges
+      const streak = calculateStreak();
+      document.getElementById('badge3').classList.toggle('unlocked', streak >= 3);
+      document.getElementById('badge3').classList.toggle('locked', streak < 3);
+      document.getElementById('badge7').classList.toggle('unlocked', streak >= 7);
+      document.getElementById('badge7').classList.toggle('locked', streak < 7);
+      document.getElementById('badge30').classList.toggle('unlocked', streak >= 30);
+      document.getElementById('badge30').classList.toggle('locked', streak < 30);
+    }
+
+    function showLevelUpAnimation(newLevel) {
+      const stars = document.createElement('div');
+      stars.className = 'stars';
+      stars.textContent = '🎉🎊✨';
+      document.body.appendChild(stars);
+
+      showToast(`🎉 恭喜升级到 Lv.${newLevel}！`, 'levelup');
+
+      setTimeout(() => stars.remove(), 1000);
+    }
+
+    // ============ Calendar ============
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+
+      const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      document.getElementById('currentMonth').textContent = `${year}年 ${monthNames[month]}`;
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDayOfWeek = firstDay.getDay();
+      const totalDays = lastDay.getDate();
+
+      const today = new Date();
+      const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+      const todayDate = today.getDate();
+
+      const grid = document.getElementById('daysGrid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < startDayOfWeek; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'day-cell empty';
+        grid.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const cell = document.createElement('div');
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayRecords = getRecordsByDate(dateStr);
+        const hasRecord = dayRecords.length > 0;
+
+        cell.className = 'day-cell';
+        if (isCurrentMonth && day === todayDate) cell.classList.add('today');
+        if (hasRecord) cell.classList.add('has-record');
+        if (startDayOfWeek + day - 1 === 0 || startDayOfWeek + day - 1 === 6) cell.classList.add('weekend');
+
+        let drinksHtml = dayRecords.slice(0, 4).map(r => {
+          if (r.customPhoto) {
+            return `<span class="drink-dot"><img src="${r.customPhoto}" alt="drink"></span>`;
+          }
+          return `<span class="drink-dot">${drinkEmojis[r.type] || '🧋'}</span>`;
+        }).join('');
+
+        if (dayRecords.length > 4) {
+          drinksHtml += `<span class="drink-dot">+${dayRecords.length - 4}</span>`;
+        }
+
+        cell.innerHTML = `
+          <span class="day-number">${day}</span>
+          <div class="day-drinks">${drinksHtml}</div>
+        `;
+
+        cell.onclick = () => openModal(dateStr);
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(delta) {
+      currentDate.setMonth(currentDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function getRecordsByDate(dateStr) {
+      const record = records.find(r => r.date === dateStr);
+      return record ? record.drinks : [];
+    }
+
+    // ============ Stats ============
+    function updateStats() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const monthStr = `${year}-${String(month + 1).padStart(2, '0')}`;
+
+      let teaCount = 0;
+      let coffeeCount = 0;
+
+      records.forEach(r => {
+        if (r.date.startsWith(monthStr)) {
+          r.drinks.forEach(d => {
+            if (d.type === 'milkTea') teaCount++;
+            if (d.type === 'coffee') coffeeCount++;
+          });
+        }
+      });
+
+      document.getElementById('monthTea').textContent = teaCount;
+      document.getElementById('monthCoffee').textContent = coffeeCount;
+      document.getElementById('streak').textContent = calculateStreak();
+    }
+
+    function updateTrendingTop3() {
+      const drinkCount = {};
+      records.forEach(r => r.drinks.forEach(d => {
+        drinkCount[d.name] = (drinkCount[d.name] || 0) + 1;
+      }));
+      const top3 = Object.entries(drinkCount).sort((a, b) => b[1] - a[1]).slice(0, 3);
+      const el = document.getElementById('trendingTop3');
+      if (el) {
+        if (top3.length > 0) {
+          el.textContent = top3.map((item, i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
+            return medal + item[0];
+          }).join(' ');
+        } else {
+          el.textContent = '暂无数据';
+        }
+      }
+    }
+
+    function calculateStreak() {
+      if (records.length === 0) return 0;
+
+      const sortedDates = records
+        .filter(r => r.drinks.length > 0)
+        .map(r => r.date)
+        .sort((a, b) => new Date(b) - new Date(a));
+
+      if (sortedDates.length === 0) return 0;
+
+      let streak = 0;
+      let checkDate = new Date();
+      checkDate.setHours(0, 0, 0, 0);
+
+      const todayStr = formatDate(checkDate);
+      const hasToday = sortedDates.includes(todayStr);
+
+      if (!hasToday) {
+        checkDate.setDate(checkDate.getDate() - 1);
+      }
+
+      for (let i = 0; i < 365; i++) {
+        const dateStr = formatDate(checkDate);
+        if (sortedDates.includes(dateStr)) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+
+      return streak;
+    }
+
+    function formatDate(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    // ============ Modals ============
+    function openModal(dateStr) {
+      selectedDate = dateStr;
+      document.getElementById('modalTitle').textContent = `🧋 ${dateStr} 添加记录`;
+      document.getElementById('drinkName').value = '';
+      document.getElementById('modal').classList.add('active');
+
+      selectDrinkType('milkTea');
+      document.querySelectorAll('.sweetness-btn').forEach(btn => btn.classList.remove('selected'));
+      document.querySelector('[data-sweetness="五分糖"]').classList.add('selected');
+      document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+      document.querySelector('[data-mood="😊"]').classList.add('selected');
+      currentForm = { type: 'milkTea', sweetness: '五分糖', mood: '😊' };
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      selectedDate = null;
+    }
+
+    function selectDrinkType(type) {
+      currentForm.type = type;
+      document.querySelectorAll('.drink-type-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.type === type);
+      });
+      document.getElementById('sweetnessGroup').style.display = type === 'coffee' ? 'none' : 'block';
+    }
+
+    function selectSweetness(btn) {
+      currentForm.sweetness = btn.dataset.sweetness;
+      document.querySelectorAll('.sweetness-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function selectMood(btn) {
+      currentForm.mood = btn.dataset.mood;
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function saveRecord() {
+      const name = document.getElementById('drinkName').value.trim() || drinkNames[currentForm.type];
+
+      const drink = {
+        type: currentForm.type,
+        name: name,
+        sweetness: currentForm.type !== 'coffee' ? currentForm.sweetness : null,
+        mood: currentForm.mood,
+        customPhoto: null,
+        time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      let dateRecord = records.find(r => r.date === selectedDate);
+      if (!dateRecord) {
+        dateRecord = { date: selectedDate, drinks: [] };
+        records.push(dateRecord);
+      }
+      dateRecord.drinks.push(drink);
+
+      saveRecords();
+      addExp(10); // +10 EXP per drink
+      checkBadges(); // Check for badge unlocks
+
+      renderCalendar();
+      renderTodayRecords();
+      updateStats();
+      updateTrendingTop3();
+      closeModal();
+      showToast(`${drinkEmojis[currentForm.type]} 已记录！+10 EXP`);
+    }
+
+    function saveRecords() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    // ============ User Modal ============
+    function openUserModal() {
+      const { nickname, slogan, role, level, customAvatar } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      document.getElementById('nickname').value = nickname;
+      document.getElementById('sloganInput').value = slogan || '';
+      document.getElementById('profileLevelText').textContent = `Lv.${level} ${roleData.name}`;
+
+      if (customAvatar) {
+        document.getElementById('profileAvatarEmoji').style.display = 'none';
+        document.getElementById('profileAvatarImg').style.display = 'block';
+        document.getElementById('profileAvatarImg').src = customAvatar;
+      } else {
+        document.getElementById('profileAvatarEmoji').style.display = 'block';
+        document.getElementById('profileAvatarImg').style.display = 'none';
+        document.getElementById('profileAvatarEmoji').textContent = roleData.emoji;
+      }
+
+      renderRoleGrid();
+      document.getElementById('userModal').classList.add('active');
+    }
+
+    function closeUserModal() {
+      document.getElementById('userModal').classList.remove('active');
+    }
+
+    function renderRoleGrid() {
+      const grid = document.getElementById('roleGrid');
+      grid.innerHTML = '';
+
+      const totalCups = getTotalCups();
+
+      for (const key in ROLES) {
+        const roleData = ROLES[key];
+        const isUnlocked = roleData.minCups <= totalCups;
+        const isSelected = userProfile.role === key;
+
+        const item = document.createElement('div');
+        item.className = `role-item ${isUnlocked ? '' : 'locked'} ${isSelected ? 'selected' : ''}`;
+        item.innerHTML = `
+          <span class="role-emoji">${roleData.emoji}</span>
+          <span class="role-name">${roleData.name}</span>
+          ${!isUnlocked ? `<span class="role-req">累计${roleData.minCups}杯</span>` : ''}
+        `;
+
+        if (isUnlocked) {
+          item.onclick = (e) => selectRole(key, e);
+        }
+
+        grid.appendChild(item);
+      }
+    }
+
+    function selectRole(roleId, e) {
+      userProfile.role = roleId;
+      const roleData = ROLES[roleId];
+
+      document.getElementById('profileAvatarEmoji').textContent = roleData.emoji;
+
+      document.querySelectorAll('.role-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      e.currentTarget.classList.add('selected');
+    }
+
+    function triggerPhotoUpload() {
+      document.getElementById('photoUpload').click();
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        userProfile.customAvatar = e.target.result;
+
+        document.getElementById('profileAvatarEmoji').style.display = 'none';
+        document.getElementById('profileAvatarImg').style.display = 'block';
+        document.getElementById('profileAvatarImg').src = e.target.result;
+
+        saveData();
+        updateLevelCard();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveUserProfile() {
+      userProfile.nickname = document.getElementById('nickname').value.trim() || '奶茶控';
+      userProfile.slogan = document.getElementById('sloganInput').value.trim() || '快乐没电？奶茶来续电！';
+
+      saveData();
+      updateLevelCard();
+      closeUserModal();
+      showToast('个人信息已保存！');
+    }
+
+    // ============ Today Records ============
+    function renderTodayRecords() {
+      const todayStr = formatDate(new Date());
+      const todayRecord = records.find(r => r.date === todayStr);
+      const container = document.getElementById('todayRecords');
+
+      if (!todayRecord || todayRecord.drinks.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="bubble-tea-icon">🧋</div>
+            <p>今天还没喝奶茶哦～</p>
+            <p style="font-size:11px;margin-top:4px;">点击日历上的日期开始记录吧！</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = todayRecord.drinks.map((drink, index) => {
+        let iconContent = drinkEmojis[drink.type] ||'🧋';
+        if (drink.customPhoto) {
+          iconContent = `<img src="${drink.customPhoto}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">`;
+        }
+        return `
+          <div class="record-item">
+            <span class="drink-icon">${iconContent}</span>
+            <div class="record-info">
+              <div class="drink-name">${drink.name}</div>
+              <div class="drink-detail">
+                ${drink.sweetness ? drink.sweetness + ' · ' : ''}${drink.time}
+              </div>
+            </div>
+            <span class="mood">${drink.mood}</span>
+            <button class="delete-btn" onclick="deleteRecord('${todayStr}', ${index})">🗑️</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function deleteRecord(dateStr, index) {
+      const dateRecord = records.find(r => r.date === dateStr);
+      if (dateRecord) {
+        const drink = dateRecord.drinks[index];
+        const confirmed = confirm(`确定删除「${drink.name}」吗？\n删除后将扣除10 EXP`);
+        if (!confirmed) return;
+
+        dateRecord.drinks.splice(index, 1);
+        if (dateRecord.drinks.length === 0) {
+          records = records.filter(r => r.date !== dateStr);
+        }
+
+        // 扣除EXP
+        userProfile.exp = Math.max(0, userProfile.exp - 10);
+        userProfile.level = calculateLevel(userProfile.exp);
+        updateUnlockedRoles();
+        saveData();
+
+        saveRecords();
+        renderCalendar();
+        renderTodayRecords();
+        updateStats();
+        updateLevelCard();
+        updateTrendingTop3();
+        showToast('已删除，-10 EXP');
+      }
+    }
+
+    // ============ Random Selector ============
+    const DRINK_POOL = [
+      // ==========瑞幸咖啡 ==========
+      { type: 'coffee', name: '加浓美式', sweetness: null },
+      { type: 'coffee', name: '苹果美式', sweetness: null },
+      { type: 'coffee', name: '小黄油美式', sweetness: null },
+      { type: 'coffee', name: '柠C美式', sweetness: null },
+      { type: 'coffee', name: '杨梅美式', sweetness: null },
+      { type: 'coffee', name: '果茶美式', sweetness: null },
+      { type: 'coffee', name: '生椰拿铁', sweetness: null },
+      { type: 'coffee', name: '茉莉花拿铁', sweetness: null },
+      { type: 'coffee', name: '陨石拿铁', sweetness: null },
+      { type: 'coffee', name: '卡布奇诺', sweetness: null },
+      { type: 'coffee', name: '澳白', sweetness: null },
+      { type: 'coffee', name: '瑞纳冰', sweetness: null },
+      { type: 'coffee', name: '葡萄冰萃美式', sweetness: null },
+      { type: 'coffee', name: '茉莉轻乳茶', sweetness: null },
+
+      // ========== 霸王茶姬 ==========
+      { type: 'milkTea', name: '伯牙绝弦', sweetness: '五分糖' },
+      { type: 'milkTea', name: '醒时春山', sweetness: '五分糖' },
+      { type: 'milkTea', name: '归云南', sweetness: '五分糖' },
+      { type: 'milkTea', name: '万里木兰', sweetness: '五分糖' },
+      { type: 'milkTea', name: '白雾红尘', sweetness: '五分糖' },
+      { type: 'milkTea', name: '花田乌龙', sweetness: '五分糖' },
+      { type: 'milkTea', name: '青青糯山', sweetness: '五分糖' },
+      { type: 'milkTea', name: '桂子飘香', sweetness: '五分糖' },
+      { type: 'milkTea', name: '桂馥兰香', sweetness: '五分糖' },
+      { type: 'milkTea', name: '轻因伯牙绝弦', sweetness: '五分糖' },
+      { type: 'milkTea', name: '轻因桂馥兰香', sweetness: '五分糖' },
+      { type: 'milkTea', name: '岩韵观音拿铁', sweetness: '五分糖' },
+      { type: 'milkTea', name: '茉莉雪芽拿铁', sweetness: '五分糖' },
+
+      // ========== 星巴克 ==========
+      { type: 'coffee', name: '经典美式', sweetness: null },
+      { type: 'coffee', name: '冷萃咖啡', sweetness: null },
+      { type: 'coffee', name: '馥芮白', sweetness: null },
+      { type: 'coffee', name: '手冲咖啡', sweetness: null },
+      { type: 'coffee', name: '生咖', sweetness: null },
+      { type: 'coffee', name: '香草拿铁', sweetness: null },
+      { type: 'coffee', name: '焦糖拿铁', sweetness: null },
+      { type: 'coffee', name: '摩卡', sweetness: null },
+      { type: 'matcha', name: '抹茶拿铁', sweetness: null },
+      { type: 'coffee', name: '红茶拿铁', sweetness: null },
+      { type: 'coffee', name: '燕麦拿铁', sweetness: null },
+      { type: 'coffee', name: '榛果拿铁', sweetness: null },
+      { type: 'coffee', name: '星冰乐（抹茶）', sweetness: null },
+      { type: 'coffee', name: '星冰乐（咖啡）', sweetness: null },
+      { type: 'coffee', name: '星冰乐（芒果）', sweetness: null },
+      { type: 'coffee', name: '焦糖玛奇朵', sweetness: null },
+
+      // ========== 库迪咖啡 ==========
+      { type: 'coffee', name: '茉莉拿铁', sweetness: null },
+      { type: 'coffee', name: '橙C咖啡', sweetness: null },
+
+      // ========== 喜茶 ==========
+      { type: 'fruitTea', name: '多肉果茶', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '多肉葡萄', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '多肉桃李', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '芝芝莓莓', sweetness: '三分糖' },
+      { type: 'milkTea', name: '轻乳茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '绿妍轻乳茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '金凤轻乳茶', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '羽衣纤体瓶', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '牛油果酸奶', sweetness: '三分糖' },
+
+      // ========== 奈雪 ==========
+      { type: 'milkTea', name: '宝藏茶', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '霸气橙子', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '霸气葡萄', sweetness: '三分糖' },
+      { type: 'fruitTea', name: '霸气西柚', sweetness: '三分糖' },
+      { type: 'milkTea', name: '茉莉初雪', sweetness: '五分糖' },
+      { type: 'milkTea', name: '鸭屎香宝藏茶', sweetness: '五分糖' },
+
+      // ========== 茶百道 ==========
+      { type: 'fruitTea', name: '杨枝甘露', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '超级水果茶', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '葡萄冻冻', sweetness: '五分糖' },
+      { type: 'milkTea', name: '豆乳玉麒麟', sweetness: '五分糖' },
+      { type: 'milkTea', name: '茉莉奶绿', sweetness: '五分糖' },
+
+      // ========== 古茗 ==========
+      { type: 'fruitTea', name: '超A芝士葡萄', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '西瓜椰椰', sweetness: '五分糖' },
+      { type: 'milkTea', name: '云岭茉莉白', sweetness: '五分糖' },
+      { type: 'milkTea', name: '芝士乌龙', sweetness: '五分糖' },
+
+      // ========== 沪上阿姨 ==========
+      { type: 'milkTea', name: '血糯米奶茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '青稞牛乳茶', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '杨枝甘露', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '多肉葡萄', sweetness: '五分糖' },
+
+      // ========== 蜜雪冰城 ==========
+      { type: 'fruitTea', name: '冰鲜柠檬水', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '柠檬红茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '珍珠奶茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '三拼霸霸奶茶', sweetness: '五分糖' },
+      { type: 'fruitTea', name: '新鲜冰淇淋', sweetness: '无糖' },
+      { type: 'fruitTea', name: '圣代', sweetness: '五分糖' },
+
+      // ========== 通用奶茶 ==========
+      { type: 'milkTea', name: '珍珠奶茶', sweetness: '全糖' },
+      { type: 'milkTea', name: '珍珠奶茶', sweetness: '七分糖' },
+      { type: 'milkTea', name: '珍珠奶茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '椰果奶茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '芋泥奶茶', sweetness: '七分糖' },
+      { type: 'milkTea', name: '红豆奶茶', sweetness: '五分糖' },
+      { type: 'milkTea', name: '波霸奶茶', sweetness: '七分糖' },
+      { type: 'milkTea', name: '燕麦奶茶', sweetness: '三分糖' },
+      { type: 'coffee', name: '拿铁', sweetness: null },
+      { type: 'coffee', name: '美式', sweetness: null },
+      { type: 'matcha', name: '抹茶星冰乐', sweetness: '五分糖' },
+      { type: 'matcha', name: '日式抹茶', sweetness: '无糖' },
+    ];
+
+    // 低卡饮品池（含卡路里，热量仅供参考）
+    const LOW_CAL_POOL = [
+      // ========== 喜茶 ==========
+      { type: 'fruitTea', brand: '喜茶', name: '纯绿妍', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '鸭屎香轻柠茶', sweetness: '无糖', kcal: '26kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '绿妍轻柠茶', sweetness: '无糖', kcal: '26kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '奇兰苹果杏特调', sweetness: '无糖', kcal: '65kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '多肉青提', sweetness: '无糖', kcal: '70kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '多肉葡萄', sweetness: '无糖', kcal: '95kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '纤体瓶系列', sweetness: '无糖', kcal: '100-115kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '多肉芒芒', sweetness: '无糖', kcal: '110kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '清爽芭乐葡', sweetness: '无糖', kcal: '115kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '清爽芭乐提', sweetness: '无糖', kcal: '120kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '喜柿多多', sweetness: '无糖', kcal: '145kcal' },
+      { type: 'coffee', brand: '喜茶', name: '拿铁', sweetness: '无糖', kcal: '164kcal' },
+      { type: 'milkTea', brand: '喜茶', name: '小奶茉', sweetness: '无糖', kcal: '165kcal' },
+      { type: 'milkTea', brand: '喜茶', name: '雪毫茉王芭乐', sweetness: '无糖', kcal: '165kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '轻芝多肉葡萄', sweetness: '无糖', kcal: '180kcal' },
+      { type: 'milkTea', brand: '喜茶', name: '热小奶茉', sweetness: '无糖', kcal: '180kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '芒芒甘露', sweetness: '无糖', kcal: '190kcal' },
+      { type: 'milkTea', brand: '喜茶', name: '芝芝绿妍茶后', sweetness: '无糖', kcal: '190kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '椰椰芒芒', sweetness: '无糖', kcal: '210kcal' },
+      { type: 'fruitTea', brand: '喜茶', name: '奇兰芭乐莲雾', sweetness: '无糖', kcal: '230kcal' },
+
+      // ========== 茉莉奶白 ==========
+      { type: 'fruitTea', brand: '茉莉奶白', name: '针王冰茶', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '栀子冰茶', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '茉莉椰冰茶', sweetness: '无糖', kcal: '28kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '栀子椰冰茶', sweetness: '无糖', kcal: '28kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '白兰椰冰茶', sweetness: '无糖', kcal: '56kcal' },
+      { type: 'coffee', brand: '茉莉奶白', name: '桐木关小种', sweetness: '无糖', kcal: '124-153kcal' },
+      { type: 'coffee', brand: '茉莉奶白', name: '单丛', sweetness: '无糖', kcal: '125kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '茉莉奶白', sweetness: '无糖', kcal: '133-173kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '栀子奶白', sweetness: '无糖', kcal: '133-173kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '茉莉针王', sweetness: '无糖', kcal: '135-176kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '白兰', sweetness: '无糖', kcal: '140-182kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '针王葡萄', sweetness: '无糖', kcal: '145-179kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '针王苹果', sweetness: '无糖', kcal: '153-179kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '开心小兰花', sweetness: '无糖', kcal: '161kcal' },
+      { type: 'milkTea', brand: '茉莉奶白', name: '开心果茉莉椰', sweetness: '无糖', kcal: '166kcal' },
+      { type: 'matcha', brand: '茉莉奶白', name: '抹茶白兰', sweetness: '无糖', kcal: '185kcal' },
+      { type: 'fruitTea', brand: '茉莉奶白', name: '针王草莓', sweetness: '无糖', kcal: '190kcal' },
+
+      // ========== 瑞幸 ==========
+      { type: 'coffee', brand: '瑞幸', name: '标准美式', sweetness: '无糖', kcal: '5kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '加浓美式', sweetness: '无糖', kcal: '7kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '茉莉花香拿铁', sweetness: '无糖', kcal: '76kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '米乳拿铁', sweetness: '无糖', kcal: '76kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '疯狂红茶拿铁', sweetness: '无糖', kcal: '89kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '大冬梨美式', sweetness: '无糖', kcal: '88kcal' },
+      { type: 'fruitTea', brand: '瑞幸', name: '轻咖椰子水', sweetness: '无糖', kcal: '94kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '鲜萃轻轻红茶', sweetness: '无糖', kcal: '98kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '疯狂多肉草莓咖', sweetness: '无糖', kcal: '104kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '葡萄冰萃美式', sweetness: '无糖', kcal: '105kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '鲜萃轻轻茉莉', sweetness: '无糖', kcal: '108kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '柠C美式', sweetness: '无糖', kcal: '112kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '酸角美式', sweetness: '无糖', kcal: '125kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '多肉葡萄咖', sweetness: '无糖', kcal: '128kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '橙C美式', sweetness: '无糖', kcal: '135kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '苹果C美式', sweetness: '无糖', kcal: '135kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '柚C美式', sweetness: '无糖', kcal: '137kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '拿铁', sweetness: '无糖', kcal: '137kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '生椰拿铁', sweetness: '无糖', kcal: '149kcal' },
+      { type: 'matcha', brand: '瑞幸', name: '瑞之抹茶', sweetness: '无糖', kcal: '154kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '澳瑞白', sweetness: '无糖', kcal: '155kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '燕麦拿铁', sweetness: '无糖', kcal: '167kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '黑糖拿铁', sweetness: '无糖', kcal: '172kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '冬至五养拿铁', sweetness: '无糖', kcal: '184kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '小黄油美式', sweetness: '无糖', kcal: '186kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '锡林郭勒咸奶茶', sweetness: '无糖', kcal: '198kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '烤椰拿铁', sweetness: '无糖', kcal: '197kcal' },
+      { type: 'fruitTea', brand: '瑞幸', name: '生椰杨枝甘露', sweetness: '无糖', kcal: '200kcal' },
+      { type: 'coffee', brand: '瑞幸', name: '小黄油奶茶', sweetness: '无糖', kcal: '238kcal' },
+
+      // ========== 库迪 ==========
+      { type: 'coffee', brand: '库迪', name: '金奖精品美式', sweetness: '无糖', kcal: '10kcal' },
+      { type: 'coffee', brand: '库迪', name: '铂金精品美式', sweetness: '无糖', kcal: '10kcal' },
+      { type: 'coffee', brand: '库迪', name: '金奖精品美式(加浓)', sweetness: '无糖', kcal: '15kcal' },
+      { type: 'coffee', brand: '库迪', name: '铂金精品美式(加浓)', sweetness: '无糖', kcal: '15kcal' },
+      { type: 'coffee', brand: '库迪', name: '柚见美式', sweetness: '无糖', kcal: '51kcal' },
+      { type: 'coffee', brand: '库迪', name: '桃桃美式', sweetness: '无糖', kcal: '85kcal' },
+      { type: 'milkTea', brand: '库迪', name: '岩韵红袍豆乳茶', sweetness: '无糖', kcal: '153kcal' },
+      { type: 'coffee', brand: '库迪', name: '卡布奇诺', sweetness: '无糖', kcal: '163kcal' },
+      { type: 'coffee', brand: '库迪', name: '慕斯豆布奇诺', sweetness: '无糖', kcal: '183kcal' },
+      { type: 'milkTea', brand: '库迪', name: '流云茉莉轻乳茶', sweetness: '无糖', kcal: '188kcal' },
+      { type: 'coffee', brand: '库迪', name: '精粹澳白', sweetness: '无糖', kcal: '204kcal' },
+      { type: 'coffee', brand: '库迪', name: '流云拿铁', sweetness: '无糖', kcal: '223kcal' },
+      { type: 'coffee', brand: '库迪', name: '豆乳拿铁', sweetness: '无糖', kcal: '233kcal' },
+      { type: 'coffee', brand: '库迪', name: '太妃大红袍鸳鸯', sweetness: '无糖', kcal: '235kcal' },
+      { type: 'coffee', brand: '库迪', name: '拿铁', sweetness: '无糖', kcal: '238kcal' },
+      { type: 'coffee', brand: '库迪', name: '纯粹燕麦拿铁', sweetness: '无糖', kcal: '250kcal' },
+
+      // ========== 星巴克 ==========
+      { type: 'coffee', brand: '星巴克', name: '美式+巴旦木奶', sweetness: '无糖', kcal: '15kcal' },
+      { type: 'coffee', brand: '星巴克', name: '美式+椰浆', sweetness: '无糖', kcal: '60kcal' },
+      { type: 'coffee', brand: '星巴克', name: '海盐焦糖冰镇浓缩', sweetness: '无糖', kcal: '87kcal' },
+      { type: 'coffee', brand: '星巴克', name: '美式+稀奶油', sweetness: '无糖', kcal: '88kcal' },
+      { type: 'coffee', brand: '星巴克', name: '椰椰双打冰镇浓缩', sweetness: '无糖', kcal: '90kcal' },
+      { type: 'coffee', brand: '星巴克', name: '大溪地风情绵云冷萃', sweetness: '无糖', kcal: '108kcal' },
+      { type: 'coffee', brand: '星巴克', name: '大溪地香草冰镇浓缩', sweetness: '无糖', kcal: '127kcal' },
+      { type: 'coffee', brand: '星巴克', name: '无糖太妃榛果', sweetness: '无糖', kcal: '132-153kcal' },
+      { type: 'coffee', brand: '星巴克', name: '香水粉椰拿铁', sweetness: '无糖', kcal: '154kcal' },
+      { type: 'matcha', brand: '星巴克', name: '焙茶拿铁', sweetness: '无糖', kcal: '161-195kcal' },
+      { type: 'matcha', brand: '星巴克', name: '抹茶拿铁', sweetness: '无糖', kcal: '170-211kcal' },
+      { type: 'coffee', brand: '星巴克', name: '红茶拿铁', sweetness: '无糖', kcal: '198kcal' },
+      { type: 'coffee', brand: '星巴克', name: '巴旦木拿铁', sweetness: '无糖', kcal: '213kcal' },
+      { type: 'coffee', brand: '星巴克', name: '红茶咖啡拿铁鸳鸯', sweetness: '无糖', kcal: '230-300kcal' },
+
+      // ========== 一点点 ==========
+      { type: 'fruitTea', brand: '一点点', name: '纯茶系列', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '茉莉绿茶', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '四季春茶', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '清香乌龙茶', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'matcha', brand: '一点点', name: '抹茶', sweetness: '无糖', kcal: '42-54kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '柠檬汁', sweetness: '无糖', kcal: '15kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '金桔柠檬', sweetness: '无糖', kcal: '35kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '苹果茉莉绿', sweetness: '无糖', kcal: '100-120kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '大橘大利', sweetness: '无糖', kcal: '123kcal' },
+      { type: 'milkTea', brand: '一点点', name: '四季奶青', sweetness: '无糖', kcal: '151-206kcal' },
+      { type: 'milkTea', brand: '一点点', name: '牛乳红茶', sweetness: '无糖', kcal: '151-206kcal' },
+      { type: 'milkTea', brand: '一点点', name: '奶香普洱', sweetness: '无糖', kcal: '151-206kcal' },
+      { type: 'milkTea', brand: '一点点', name: '重焙奶乌', sweetness: '无糖', kcal: '151-206kcal' },
+      { type: 'milkTea', brand: '一点点', name: '抹茶奶茶', sweetness: '无糖', kcal: '174-241kcal' },
+      { type: 'milkTea', brand: '一点点', name: '藏青盐咸奶绿', sweetness: '无糖', kcal: '186kcal' },
+      { type: 'milkTea', brand: '一点点', name: '桂香奶乌', sweetness: '无糖', kcal: '189kcal' },
+      { type: 'fruitTea', brand: '一点点', name: '葡萄柚绿', sweetness: '无糖', kcal: '198kcal' },
+      { type: 'milkTea', brand: '一点点', name: '芝士乌龙玛奇朵', sweetness: '无糖', kcal: '230kcal' },
+
+      // ========== 蜜雪冰城 ==========
+      { type: 'fruitTea', brand: '蜜雪冰城', name: '柠檬水', sweetness: '无糖', kcal: '0kcal' },
+      { type: 'fruitTea', brand: '蜜雪冰城', name: '茉莉绿茶', sweetness: '无糖', kcal: '3kcal' },
+      { type: 'fruitTea', brand: '蜜雪冰城', name: '柠檬绿茶', sweetness: '无糖', kcal: '3kcal' },
+      { type: 'fruitTea', brand: '蜜雪冰城', name: '棒打鲜橙', sweetness: '无糖', kcal: '85kcal' },
+
+      // ========== 霸王茶姬 ==========
+      { type: 'milkTea', brand: '霸王茶姬', name: '桂馥兰香(纯茶)', sweetness: '无糖', kcal: '65kcal' },
+      { type: 'milkTea', brand: '霸王茶姬', name: '伯牙绝弦', sweetness: '无糖', kcal: '130kcal' },
+      { type: 'milkTea', brand: '霸王茶姬', name: '花田乌龙', sweetness: '无糖', kcal: '125kcal' },
+      { type: 'milkTea', brand: '霸王茶姬', name: '桂馥兰香', sweetness: '无糖', kcal: '121kcal' },
+      { type: 'milkTea', brand: '霸王茶姬', name: '青青糯山', sweetness: '无糖', kcal: '143kcal' },
+      { type: 'milkTea', brand: '霸王茶姬', name: '白雾红尘', sweetness: '无糖', kcal: '163kcal' },
+
+      // ========== 茶百道 ==========
+      { type: 'milkTea', brand: '茶百道', name: '鲜奶茉莉奶绿', sweetness: '无糖', kcal: '141kcal' },
+      { type: 'milkTea', brand: '茶百道', name: '茉莉奶绿', sweetness: '无糖', kcal: '125kcal' },
+      { type: 'fruitTea', brand: '茶百道', name: '百香凤梨', sweetness: '无糖', kcal: '100kcal' },
+      { type: 'fruitTea', brand: '茶百道', name: '葡萄冻冻', sweetness: '无糖', kcal: '130-145kcal' },
+      { type: 'fruitTea', brand: '茶百道', name: '青提茉莉', sweetness: '无糖', kcal: '110kcal' },
+    ];
+
+    let currentRandom = null;
+    let isSpinning = false;
+
+    function openRandomModal() {
+      resetSlot();
+      document.getElementById('randomModal').classList.add('active');
+    }
+
+    function openLowCalModal() {
+      currentRandom = LOW_CAL_POOL[Math.floor(Math.random() * LOW_CAL_POOL.length)];
+      document.getElementById('randomEmoji').textContent = drinkEmojis[currentRandom.type];
+      document.getElementById('randomDrinkName').textContent = currentRandom.name;
+      document.getElementById('randomSweetness').textContent = '无糖';
+      document.getElementById('randomKcal').textContent = currentRandom.kcal || '';
+      document.getElementById('slotMachine').style.display = 'none';
+      document.getElementById('randomResult').style.display = 'block';
+      document.getElementById('spinBtn').style.display = 'none';
+      document.getElementById('resultActions').style.display = 'flex';
+      document.getElementById('randomModal').classList.add('active');
+    }
+
+    function openLowcalLibraryModal() {
+      const content = document.getElementById('lowcalLibraryContent');
+      content.innerHTML = '';
+
+      // Group by brand
+      const brands = {};
+      LOW_CAL_POOL.forEach(drink => {
+        const brand = getBrand(drink);
+        if (!brands[brand]) brands[brand] = [];
+        brands[brand].push(drink);
+      });
+
+      // Build HTML with note
+      let html = '<div style="font-size: 11px; color: #888; margin-bottom: 12px; padding: 8px; background: #f9f9f9; border-radius: 8px;">📋 热量数据仅供参考</div>';
+      for (const brand in brands) {
+        html += `<div style="margin-bottom: 14px;">
+          <div style="font-weight: 700; color: #2E7D32; font-size: 13px; margin-bottom: 6px;">${brand}</div>`;
+        brands[brand].forEach(drink => {
+          html += `<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f0;">
+            <span>${drinkEmojis[drink.type]} ${drink.name}</span>
+            <span style="color: #888;">${drink.kcal}</span>
+          </div>`;
+        });
+        html += '</div>';
+      }
+      content.innerHTML = html;
+      document.getElementById('lowcalModal').classList.add('active');
+    }
+
+    function getBrand(drink) {
+      return drink.brand || '其他';
+    }
+
+    function closeLowcalModal() {
+      document.getElementById('lowcalModal').classList.remove('active');
+    }
+
+    function closeRandomModal() {
+      document.getElementById('randomModal').classList.remove('active');
+    }
+
+    function resetSlot() {
+      // Reset UI
+      document.getElementById('spinBtn').style.display = 'inline-block';
+      document.getElementById('resultActions').style.display = 'none';
+      document.getElementById('randomResult').style.display = 'none';
+      document.getElementById('slotMachine').style.display = 'block';
+      document.getElementById('randomKcal').textContent = '';
+
+      const reel = document.getElementById('slotReel');
+      reel.classList.remove('spinning', 'settling');
+      reel.style.transform = 'translateY(0)';
+
+      // Build initial items
+      buildSlotReel();
+      currentRandom = null;
+      isSpinning = false;
+    }
+
+    function buildSlotReel() {
+      const reel = document.getElementById('slotReel');
+      reel.innerHTML = '';
+
+      // Create items for scrolling effect (show 7 items)
+      for (let i = 0; i < 7; i++) {
+        const randomDrink = DRINK_POOL[Math.floor(Math.random() * DRINK_POOL.length)];
+        const item = document.createElement('div');
+        item.className = 'slot-item';
+        item.innerHTML = `
+          <div class="slot-emoji">${drinkEmojis[randomDrink.type]}</div>
+          <div class="slot-name">${randomDrink.name}</div>
+        `;
+        reel.appendChild(item);
+      }
+    }
+
+    function spinSlot() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const reel = document.getElementById('slotReel');
+      const spinBtn = document.getElementById('spinBtn');
+
+      spinBtn.style.display = 'none';
+
+      // Pick the final result
+      currentRandom = DRINK_POOL[Math.floor(Math.random() * DRINK_POOL.length)];
+
+      // Build reel with items ending in the chosen drink
+      reel.innerHTML = '';
+      const numItems = 20 + Math.floor(Math.random() * 10); // 20-29 items
+
+      for (let i = 0; i < numItems; i++) {
+        const randomDrink = DRINK_POOL[Math.floor(Math.random() * DRINK_POOL.length)];
+        const item = document.createElement('div');
+        item.className = 'slot-item';
+        item.innerHTML = `
+          <div class="slot-emoji">${drinkEmojis[randomDrink.type]}</div>
+          <div class="slot-name">${randomDrink.name}</div>
+        `;
+        reel.appendChild(item);
+      }
+
+      // Add the winning item at the end
+      const winItem = document.createElement('div');
+      winItem.className = 'slot-item';
+      winItem.innerHTML = `
+        <div class="slot-emoji">${drinkEmojis[currentRandom.type]}</div>
+        <div class="slot-name">${currentRandom.name}</div>
+      `;
+      reel.appendChild(winItem);
+
+      // Start spinning
+      reel.classList.add('spinning');
+      const itemHeight = 80;
+      const totalHeight = (numItems) * itemHeight;
+      const settlePosition = -(totalHeight - 80);
+
+      // Fast spin for 2 seconds
+      let currentPos = 0;
+      const spinInterval = setInterval(() => {
+        currentPos -= 30;
+        if (currentPos <= settlePosition) {
+          clearInterval(spinInterval);
+          reel.style.transform = `translateY(${settlePosition}px)`;
+          reel.classList.remove('spinning');
+          reel.classList.add('settling');
+
+          setTimeout(() => {
+            reel.classList.remove('settling');
+            showResult();
+            isSpinning = false;
+          }, 800);
+        } else {
+          reel.style.transform = `translateY(${currentPos}px)`;
+        }
+      }, 50);
+    }
+
+    function showResult() {
+      document.getElementById('slotMachine').style.display = 'none';
+      document.getElementById('randomResult').style.display = 'block';
+      document.getElementById('randomEmoji').textContent = drinkEmojis[currentRandom.type];
+      document.getElementById('randomDrinkName').textContent = currentRandom.name;
+      document.getElementById('randomSweetness').textContent = currentRandom.sweetness || '可选甜度';
+      document.getElementById('resultActions').style.display = 'flex';
+    }
+
+    function acceptRandom() {
+      if (!currentRandom) return;
+
+      const todayStr = formatDate(new Date());
+      const drink = {
+        type: currentRandom.type,
+        name: currentRandom.name,
+        sweetness: currentRandom.sweetness,
+        mood: '🤩',
+        customPhoto: null,
+        time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      let dateRecord = records.find(r => r.date === todayStr);
+      if (!dateRecord) {
+        dateRecord = { date: todayStr, drinks: [] };
+        records.push(dateRecord);
+      }
+      dateRecord.drinks.push(drink);
+
+      saveRecords();
+      addExp(10);
+	      checkBadges();
+
+      closeRandomModal();
+      renderCalendar();
+      renderTodayRecords();
+      updateStats();
+      updateTrendingTop3();
+      showToast(`${drinkEmojis[currentRandom.type]} ${currentRandom.name} 已记录！+10 EXP`);
+    }
+
+
+    // Close modal on overlay click
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeModal();
+    });
+
+    document.getElementById('userModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeUserModal();
+    });
+
+    document.getElementById('randomModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeRandomModal();
+    });
+
+    document.getElementById('exportModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeExportModal();
+    });
+
+    document.getElementById('rulesModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeRulesModal();
+    });
+
+    document.getElementById('lowcalModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeLowcalModal();
+    });
+
+    document.getElementById('shareModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeShareModal();
+    });
+
+    document.getElementById('badgeModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeBadgeModal();
+    });
+
+    document.getElementById('badgeUnlockModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeBadgeUnlockModal();
+    });
+
+    // ============ Utility Functions ============
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    let toastTimeout = null;
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toast.textContent = message;
+      toast.className = `toast ${type} show`;
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+        toastTimeout = null;
+      }, 2500);
+    }
+
+    // ESC key to close modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+          modal.classList.remove('active');
+        });
+      }
+    });
+
+    // ============ Export Functions ============
+    function openExportModal() {
+      document.getElementById('exportModal').classList.add('active');
+    }
+
+    function openRulesModal() {
+      document.getElementById('rulesModal').classList.add('active');
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rulesModal').classList.remove('active');
+    }
+
+    function closeExportModal() {
+      document.getElementById('exportModal').classList.remove('active');
+    }
+
+    function openShareModal() {
+      document.getElementById('shareModal').classList.add('active');
+    }
+
+    function closeShareModal() {
+      document.getElementById('shareModal').classList.remove('active');
+    }
+
+    function openTrendingModal() {
+      renderTrendingContent();
+      document.getElementById('trendingModal').classList.add('active');
+    }
+
+    function closeTrendingModal() {
+      document.getElementById('trendingModal').classList.remove('active');
+    }
+
+    function renderTrendingContent() {
+      const container = document.getElementById('trendingContent');
+      let html = '';
+
+      // ========== Top 5 饮品 ==========
+      const drinkCount = {};
+      records.forEach(r => r.drinks.forEach(d => {
+        drinkCount[d.name] = (drinkCount[d.name] || 0) + 1;
+      }));
+      const top5 = Object.entries(drinkCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      html += '<div style="margin-bottom: 20px;">';
+      html += '<div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#8B5A3C; margin-bottom:10px;">';
+      html += '<span style="font-size:16px;">🔥</span><span>本周 Top 5 饮品</span></div>';
+      if (top5.length > 0) {
+        top5.forEach(function(item, i) {
+          var name = item[0];
+          var count = item[1];
+          var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1) + '.';
+          var bg = i === 0 ? 'linear-gradient(135deg, #FFF5F7, #FFE4E8)' : '#FAFAFA';
+          html += '<div style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:' + bg + '; border-radius:10px; margin-bottom:6px;">';
+          html += '<div style="display:flex; align-items:center; gap:8px;">';
+          html += '<span style="font-size:14px;">' + medal + '</span>';
+          html += '<span style="font-weight:600; color:#8B5A3C;">' + escapeHtml(name) + '</span>';
+          html += '</div>';
+          html += '<span style="color:#FF8FAB; font-weight:700;">' + count + '次</span>';
+          html += '</div>';
+        });
+      } else {
+        html += '<div style="color:#C4A484; text-align:center; padding:24px; background:#FAFAFA; border-radius:10px;">📝 还没有记录，添加第一杯奶茶吧！</div>';
+      }
+      html += '</div>';
+
+      // ========== 季节推荐 ==========
+      var month = new Date().getMonth();
+      var isSummer = month >= 5 && month <= 8;
+      var isWinter = month >= 10 || month <= 2;
+      var seasonIcon = isSummer ? '☀️' : isWinter ? '❄️' : '🍃';
+      var seasonText = isSummer ? '夏天' : isWinter ? '冬天' : '春秋';
+      var seasonRecommend = isSummer ? '推荐：果茶、冰饮系列、清爽解暑' : isWinter ? '推荐：热奶茶、厚乳系列、暖身暖心' : '推荐：奶茶、果茶均衡、随心所欲';
+      var seasonBg = isSummer ? '#E3F2FD, #BBDEFB' : isWinter ? '#FFF3E0, #FFE0B2' : '#E8F5E9, #C8E6C9';
+
+      html += '<div style="margin-bottom:20px;">';
+      html += '<div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#8B5A3C; margin-bottom:10px;">';
+      html += '<span style="font-size:16px;">' + seasonIcon + '</span><span>' + seasonText + '季节推荐</span></div>';
+      html += '<div style="padding:12px 14px; background:linear-gradient(135deg, ' + seasonBg + '); border-radius:10px; font-size:13px; color:#666;">' + seasonRecommend + '</div>';
+      html += '</div>';
+
+      // ========== 新品上架 ==========
+      var newProducts = JSON.parse(localStorage.getItem('trendingNewProducts') || '[]');
+      html += '<div style="margin-bottom:20px;">';
+      html += '<div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#8B5A3C; margin-bottom:10px;">';
+      html += '<span style="font-size:16px;">🆕</span><span>新品上架</span><span style="font-size:11px; color:#C4A484; font-weight:400;">(点击删除)</span></div>';
+      if (newProducts.length > 0) {
+        newProducts.forEach(function(name) {
+          html += '<div class="trending-item" data-name="' + escapeHtml(name) + '" data-type="new" style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#FFF8F0; border-radius:10px; margin-bottom:6px; cursor:pointer; transition:all 0.2s;">';
+          html += '<div style="display:flex; align-items:center; gap:8px;">';
+          html += '<span style="font-size:14px;">🆕</span>';
+          html += '<span style="font-weight:600; color:#8B5A3C;">' + escapeHtml(name) + '</span>';
+          html += '<span style="background:#4CAF50; color:white; font-size:10px; padding:2px 6px; border-radius:6px; font-weight:600;">NEW</span>';
+          html += '</div>';
+          html += '<span class="remove-btn" style="cursor:pointer; color:#C4A484; font-size:14px; padding:4px;">✕</span>';
+          html += '</div>';
+        });
+      } else {
+        html += '<div style="color:#C4A484; text-align:center; padding:16px; background:#FAFAFA; border-radius:10px; font-size:12px;">暂无新品</div>';
+      }
+      html += '</div>';
+
+      // ========== 避雷区 ==========
+      var avoidList = JSON.parse(localStorage.getItem('trendingAvoidList') || '[]');
+      html += '<div>';
+      html += '<div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#8B5A3C; margin-bottom:10px;">';
+      html += '<span style="font-size:16px;">💣</span><span>避雷区</span><span style="font-size:11px; color:#C4A484; font-weight:400;">(点击删除)</span></div>';
+      if (avoidList.length > 0) {
+        avoidList.forEach(function(item) {
+          html += '<div class="trending-item" data-name="' + escapeHtml(item.name) + '" data-type="avoid" style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#FFF5F5; border-radius:10px; margin-bottom:6px; cursor:pointer; transition:all 0.2s;">';
+          html += '<div style="display:flex; align-items:center; gap:8px;">';
+          html += '<span style="font-size:14px;">💣</span>';
+          html += '<span style="font-weight:600; color:#8B5A3C;">' + escapeHtml(item.name) + '</span>';
+          html += '<span style="font-size:11px; color:#888;">' + escapeHtml(item.reason) + '</span>';
+          html += '</div>';
+          html += '<span class="remove-btn" style="cursor:pointer; color:#C4A484; font-size:14px; padding:4px;">✕</span>';
+          html += '</div>';
+        });
+      } else {
+        html += '<div style="color:#C4A484; text-align:center; padding:16px; background:#FAFAFA; border-radius:10px; font-size:12px;">暂无避雷</div>';
+      }
+      html += '</div>';
+
+      container.innerHTML = html;
+
+      // 事件委托
+      container.querySelectorAll('.trending-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          if (e.target.classList.contains('remove-btn')) {
+            removeTrendingItem(item.dataset.name, item.dataset.type);
+          } else if (item.dataset.type === 'new') {
+            quickAddDrink(item.dataset.name);
+          }
+        });
+      });
+    }
+
+    function addTrendingItem() {
+      const name = document.getElementById('trendingNameInput').value.trim();
+      const type = document.getElementById('trendingTypeSelect').value;
+      if (!name) {
+        showToast('请输入饮品名称');
+        return;
+      }
+
+      if (type === 'new') {
+        const arr = JSON.parse(localStorage.getItem('trendingNewProducts') || '[]');
+        if (arr.includes(name)) {
+          showToast('该项目已存在');
+          return;
+        }
+        arr.push(name);
+        localStorage.setItem('trendingNewProducts', JSON.stringify(arr));
+        showToast('已添加新品 🆕');
+      } else {
+        const reason = prompt('请输入避雷原因（如：太甜、小料踩雷等）') || '未知';
+        const arr = JSON.parse(localStorage.getItem('trendingAvoidList') || '[]');
+        arr.push({ name, reason });
+        localStorage.setItem('trendingAvoidList', JSON.stringify(arr));
+        showToast('已加入避雷区 💣');
+      }
+      document.getElementById('trendingNameInput').value = '';
+      renderTrendingContent();
+    }
+
+    function removeTrendingItem(name, type) {
+      if (type === 'new') {
+        const arr = JSON.parse(localStorage.getItem('trendingNewProducts') || '[]');
+        const idx = arr.indexOf(name);
+        if (idx > -1) {
+          arr.splice(idx, 1);
+          localStorage.setItem('trendingNewProducts', JSON.stringify(arr));
+        }
+      } else {
+        const arr = JSON.parse(localStorage.getItem('trendingAvoidList') || '[]');
+        const idx = arr.findIndex(i => i.name === name);
+        if (idx > -1) {
+          arr.splice(idx, 1);
+          localStorage.setItem('trendingAvoidList', JSON.stringify(arr));
+        }
+      }
+      renderTrendingContent();
+    }
+
+    // 快速添加饮品（从新品列表点击）
+    function quickAddDrink(name) {
+      const todayStr = formatDate(new Date());
+      const drink = {
+        type: 'milkTea',
+        name: name,
+        sweetness: '五分糖',
+        mood: '😊',
+        customPhoto: null,
+        time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      let dateRecord = records.find(r => r.date === todayStr);
+      if (!dateRecord) {
+        dateRecord = { date: todayStr, drinks: [] };
+        records.push(dateRecord);
+      }
+      dateRecord.drinks.push(drink);
+
+      saveRecords();
+      addExp(10);
+      checkBadges();
+
+      renderCalendar();
+      renderTodayRecords();
+      updateStats();
+      updateTrendingTop3();
+      closeTrendingModal();
+      showToast(`🧋 ${name} 已添加！`);
+    }
+
+    // ============ Share Report Functions ============
+    function generateYearReport() {
+      closeShareModal();
+      showToast('正在生成年度报告...');
+
+      const year = new Date().getFullYear();
+      const yearRecords = records.filter(r => r.date.startsWith(String(year)));
+      const { nickname, role, level } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      const totalCups = yearRecords.reduce((sum, r) => sum + r.drinks.length, 0);
+
+      // Find favorite drink
+      const drinkCount = {};
+      yearRecords.forEach(r => r.drinks.forEach(d => {
+        drinkCount[d.name] = (drinkCount[d.name] || 0) + 1;
+      }));
+      const favoriteDrink = Object.entries(drinkCount).sort((a, b) => b[1] - a[1])[0] || ['未知', 0];
+
+      // Count badges unlocked
+      const badgesUnlocked = Object.values(badgeData.badges).filter(v => v).length;
+
+      // Calculate streak
+      const streak = calculateStreak();
+
+      const content = document.getElementById('exportContent');
+      content.innerHTML = `
+        <div style="background: linear-gradient(135deg, #FFF5F7, #FFE4E8); border-radius: 20px; padding: 24px; text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 8px;">🎆</div>
+          <div style="font-size: 22px; font-weight: 800; color: #8B5A3C;">${year}年度报告</div>
+        </div>
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="font-size: 48px; margin-bottom: 8px;">${roleData.emoji}</div>
+          <div style="font-size: 16px; font-weight: 600; color: #8B5A3C;">${nickname} · Lv.${level} ${roleData.name}</div>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 20px; margin: 16px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+          <div style="text-align: center; padding: 12px;">
+            <div style="font-size: 28px; font-weight: 800; color: #FF8FAB;">${totalCups}</div>
+            <div style="font-size: 12px; color: #C4A484;">今年喝了（杯）</div>
+          </div>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 16px; margin: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: left;">
+          <div style="font-size: 14px; font-weight: 700; color: #8B5A3C; margin-bottom: 12px;">📊 数据一览</div>
+          <div style="font-size: 13px; color: #666; margin-bottom: 8px;">⭐ 最爱：${favoriteDrink[0]}（${favoriteDrink[1]}次）</div>
+          <div style="font-size: 13px; color: #666; margin-bottom: 8px;">🏅 解锁成就：${badgesUnlocked}个</div>
+          <div style="font-size: 13px; color: #666;">🔥 最长连续：${streak}天</div>
+        </div>
+        <div style="text-align: center; font-size: 11px; color: #C4A484; margin-top: 16px;">
+          🧋 奶茶日记 · ${new Date().toLocaleDateString('zh-CN')}
+        </div>
+      `;
+
+      downloadShareImage();
+    }
+
+    function generateMonthReport() {
+      closeShareModal();
+      showToast('正在生成月报告...');
+
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+      const monthStr = `${year}-${String(month).padStart(2, '0')}`;
+      const monthRecords = records.filter(r => r.date.startsWith(monthStr));
+      const { nickname, role, level } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      const totalCups = monthRecords.reduce((sum, r) => sum + r.drinks.length, 0);
+      const totalCost = monthRecords.reduce((sum, r) => sum + r.drinks.reduce((s, d) => s + (d.price || 0), 0), 0);
+      const avgPerDay = totalCups / now.getDate();
+
+      const content = document.getElementById('exportContent');
+      content.innerHTML = `
+        <div style="background: linear-gradient(135deg, #FFF8F0, #FFF0E8); border-radius: 20px; padding: 24px; text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+          <div style="font-size: 22px; font-weight: 800; color: #8B5A3C;">${month}月奶茶报告</div>
+        </div>
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="font-size: 48px; font-weight: 800; color: #FF8FAB;">${totalCups}</div>
+          <div style="font-size: 14px; color: #C4A484;">本月共喝</div>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 24px; margin: 16px 0;">
+          <div style="text-align: center;">
+            <div style="font-size: 20px; font-weight: 700; color: #8B5A3C;">¥${totalCost}</div>
+            <div style="font-size: 11px; color: #C4A484;">消费</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 20px; font-weight: 700; color: #8B5A3C;">${avgPerDay.toFixed(1)}杯</div>
+            <div style="font-size: 11px; color: #C4A484;">日均</div>
+          </div>
+        </div>
+        <div style="text-align: center; font-size: 12px; color: #C4A484; margin-top: 16px;">
+          🧋 奶茶日记 · ${nickname} · Lv.${level}
+        </div>
+      `;
+
+      downloadShareImage();
+    }
+
+    function generateCheckinWatermark() {
+      closeShareModal();
+      const { nickname, role, level } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}.${today.getMonth() + 1}.${today.getDate()}`;
+
+      const content = document.getElementById('exportContent');
+      content.innerHTML = `
+        <div style="background: linear-gradient(135deg, #FFF5F7, #FFF8F0); padding: 50px; text-align: center;">
+          <div style="font-size: 72px;">🧋</div>
+          <div style="font-size: 20px; font-weight: 700; color: #8B5A3C; margin-top: 16px;">今天也要喝奶茶呀~</div>
+          <div style="font-size: 14px; color: #C4A484; margin-top: 8px;">${todayStr}</div>
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #FFB8C6;">
+            <div style="font-size: 18px; font-weight: 600; color: #8B5A3C;">${nickname}</div>
+            <div style="font-size: 13px; color: #FF8FAB; margin-top: 6px;">Lv.${level} ${roleData.emoji} ${roleData.name}</div>
+          </div>
+        </div>
+      `;
+
+      downloadShareImage();
+    }
+
+    async function downloadShareImage() {
+      const content = document.getElementById('exportContent');
+      const preview = document.getElementById('exportPreview');
+
+      preview.style.position = 'fixed';
+      preview.style.left = '0';
+      preview.style.top = '0';
+      preview.style.zIndex = '-1';
+      preview.style.visibility = 'visible';
+
+      try {
+        const canvas = await html2canvas(content, { backgroundColor: '#ffffff', scale: 2, useCORS: true, windowWidth: 600 });
+
+        preview.style.position = 'fixed';
+        preview.style.left = '-9999px';
+        preview.style.top = '0';
+        preview.style.zIndex = '';
+        preview.style.visibility = 'hidden';
+
+        canvas.toBlob(async (blob) => {
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]);
+            showToast('图片已复制到剪贴板！');
+          } catch (err) {
+            // Fallback: download
+            const link = document.createElement('a');
+            link.download = `奶茶日记_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('图片已保存！');
+          }
+        }, 'image/png');
+      } catch (err) {
+        preview.style.position = 'fixed';
+        preview.style.left = '-9999px';
+        preview.style.top = '0';
+        showToast('生成失败');
+      }
+    }
+
+    async function exportTodayImage() {
+      closeExportModal();
+      showToast('正在生成图片...');
+
+      const todayStr = formatDate(new Date());
+      const todayRecord = records.find(r => r.date === todayStr);
+      const { nickname, slogan, role, level } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      // Build calendar HTML for export
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDayOfWeek = firstDay.getDay();
+      const totalDays = lastDay.getDate();
+      const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+      let calendarHtml = '<div style="background: white; border-radius: 12px; padding: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">';
+      calendarHtml += `<div style="text-align: center; font-weight: 700; font-size: 14px; color: #8B5A3C; margin-bottom: 8px;">${year}年 ${monthNames[month]}</div>`;
+      calendarHtml += '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center;">';
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+      weekdays.forEach(d => {
+        calendarHtml += `<div style="font-size: 10px; color: #C4A484; font-weight: 600;">${d}</div>`;
+      });
+      for (let i = 0; i < startDayOfWeek; i++) {
+        calendarHtml += '<div></div>';
+      }
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayRecords = getRecordsByDate(dateStr);
+        const isToday = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+        const hasRecord = dayRecords.length > 0;
+
+        calendarHtml += `<div style="aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; ${isToday ? 'background: linear-gradient(135deg, #FFB8C6, #FF8FAB); color: white;' : hasRecord ? 'background: #FFF8F0;' : 'background: #FAFAFA;'}">
+          <span>${day}</span>
+          ${hasRecord ? `<span style="font-size: 12px;">${dayRecords.slice(0, 2).map(r => drinkEmojis[r.type]).join('')}</span>` : ''}
+        </div>`;
+      }
+      calendarHtml += '</div></div>';
+
+      const content = document.getElementById('exportContent');
+      content.innerHTML = `
+        <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #FFF5F7, #FFF8F0); border-radius: 16px; margin-bottom: 16px;">
+          <div style="font-size: 48px; margin-bottom: 8px;">${roleData.emoji}</div>
+          <div style="font-size: 20px; font-weight: 800; color: #8B5A3C;">🧋 奶茶日记</div>
+          <div style="font-size: 14px; color: #C4A484; margin-top: 4px;">${nickname} · Lv.${level} ${roleData.name}</div>
+        </div>
+        ${calendarHtml}
+        <div style="font-size: 16px; font-weight: 700; color: #8B5A3C; margin-bottom: 12px;">📅 今日记录 - ${todayStr}</div>
+        ${todayRecord && todayRecord.drinks.length > 0 ? todayRecord.drinks.map(d => `
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #FFF8F0; border-radius: 10px; margin-bottom: 8px;">
+            <span style="font-size: 28px;">${drinkEmojis[d.type]}</span>
+            <div style="flex: 1;">
+              <div style="font-weight: 700; font-size: 14px;">${d.name}</div>
+              <div style="font-size: 12px; color: #C4A484;">${d.sweetness || ''} ${d.sweetness ? '·' : ''} ${d.time}</div>
+            </div>
+            <span style="font-size: 20px;">${d.mood}</span>
+          </div>
+        `).join('') : '<div style="text-align: center; padding: 30px; color: #C4A484;">今天还没记录哦～</div>'}
+      `;
+
+      await generateAndDownloadImage();
+    }
+
+    async function exportWeekImage() {
+      closeExportModal();
+      showToast('正在生成图片...');
+
+      const dates = getLast7Days();
+      await exportDateRange(dates, '📆 本周记录');
+    }
+
+    async function exportMonthImage() {
+      closeExportModal();
+      showToast('正在生成图片...');
+
+      const dates = getCurrentMonthDates();
+      await exportDateRange(dates, '🗓️ 本月记录');
+    }
+
+    async function exportDateRange(dates, title) {
+      const { nickname, role, level } = userProfile;
+      const roleData = ROLES[role] || ROLES.milkTeaApprentice;
+
+      // Build calendar for the month containing the dates
+      let calendarHtml = '';
+      if (dates.length >= 7) {
+        // Determine the month for calendar
+        const sampleDate = new Date(dates[0]);
+        const year = sampleDate.getFullYear();
+        const month = sampleDate.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDayOfWeek = firstDay.getDay();
+        const totalDays = lastDay.getDate();
+        const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+        calendarHtml = '<div style="background: white; border-radius: 12px; padding: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">';
+        calendarHtml += `<div style="text-align: center; font-weight: 700; font-size: 14px; color: #8B5A3C; margin-bottom: 8px;">${year}年 ${monthNames[month]}</div>`;
+        calendarHtml += '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center;">';
+        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        weekdays.forEach(d => {
+          calendarHtml += `<div style="font-size: 10px; color: #C4A484; font-weight: 600;">${d}</div>`;
+        });
+        for (let i = 0; i < startDayOfWeek; i++) {
+          calendarHtml += '<div></div>';
+        }
+        for (let day = 1; day <= totalDays; day++) {
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const dayRecords = getRecordsByDate(dateStr);
+          const hasRecord = dayRecords.length > 0;
+          const inRange = dates.includes(dateStr);
+
+          calendarHtml += `<div style="aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; ${inRange ? (hasRecord ? 'background: #FFF8F0;' : 'background: #FAFAFA;') : 'background: transparent;'}">
+            <span>${day}</span>
+            ${hasRecord && inRange ? `<span style="font-size: 12px;">${dayRecords.slice(0, 2).map(r => drinkEmojis[r.type]).join('')}</span>` : ''}
+          </div>`;
+        }
+        calendarHtml += '</div></div>';
+      }
+
+      let recordsHtml = '';
+      dates.forEach(dateStr => {
+        const record = records.find(r => r.date === dateStr);
+        if (record && record.drinks.length > 0) {
+          recordsHtml += `
+            <div style="margin-bottom: 12px;">
+              <div style="font-size: 13px; font-weight: 700; color: #C4A484; margin-bottom: 6px;">${dateStr}</div>
+              ${record.drinks.map(d => `
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: #FFF8F0; border-radius: 8px; margin-bottom: 6px;">
+                  <span style="font-size: 22px;">${drinkEmojis[d.type]}</span>
+                  <div style="flex: 1; font-size: 13px; font-weight: 600;">${d.name}</div>
+                  <span style="font-size: 16px;">${d.mood}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      });
+
+      if (!recordsHtml) {
+        recordsHtml = '<div style="text-align: center; padding: 30px; color: #C4A484;">这个月还没记录哦～</div>';
+      }
+
+      const content = document.getElementById('exportContent');
+      content.innerHTML = `
+        <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #FFF5F7, #FFF8F0); border-radius: 16px; margin-bottom: 16px;">
+          <div style="font-size: 48px; margin-bottom: 8px;">${roleData.emoji}</div>
+          <div style="font-size: 20px; font-weight: 800; color: #8B5A3C;">🧋 奶茶日记</div>
+          <div style="font-size: 14px; color: #C4A484; margin-top: 4px;">${nickname} · Lv.${level} ${roleData.name}</div>
+        </div>
+        ${calendarHtml}
+        <div style="font-size: 16px; font-weight: 700; color: #8B5A3C; margin-bottom: 12px;">${title}</div>
+        ${recordsHtml}
+      `;
+
+      await generateAndDownloadImage();
+    }
+
+    async function generateAndDownloadImage() {
+      const preview = document.getElementById('exportPreview');
+      const content = document.getElementById('exportContent');
+
+      try {
+        // Temporarily make preview visible for html2canvas
+        preview.style.position = 'fixed';
+        preview.style.left = '0';
+        preview.style.top = '0';
+        preview.style.zIndex = '-1';
+        preview.style.visibility = 'visible';
+
+        const canvas = await html2canvas(content, {
+          backgroundColor: '#ffffff',
+          scale: 2,
+          useCORS: true,
+          windowWidth: 600
+        });
+
+        // Hide preview again
+        preview.style.position = 'fixed';
+        preview.style.left = '-9999px';
+        preview.style.top = '0';
+        preview.style.zIndex = '';
+        preview.style.visibility = 'hidden';
+
+        const link = document.createElement('a');
+        link.download = `奶茶日记_${formatDate(new Date())}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        showToast('图片已保存！');
+      } catch (error) {
+        showToast('生成失败，请重试');
+        console.error(error);
+      }
+    }
+
+    function getLast7Days() {
+      const dates = [];
+      const today = new Date();
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        dates.push(formatDate(date));
+      }
+      return dates;
+    }
+
+    function getCurrentMonthDates() {
+      const year = new Date().getFullYear();
+      const month = new Date().getMonth();
+      const lastDay = new Date(year, month + 1, 0).getDate();
+
+      const dates = [];
+      for (let day = 1; day <= lastDay; day++) {
+        dates.push(`${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
+      }
+      return dates;
+    }
+  </script>
+</body>
+</html>
